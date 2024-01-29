@@ -2,10 +2,16 @@ import Road from '../objects/Road';
 import { Castle } from '../interfaces/Castle';
 
 export default class RoadManager {
+    private scene: Phaser.Scene;
     private roads: Road[];
+    private roadWidth: number;
+    private roadHeight: number;
 
-    constructor() {
+    constructor(scene: Phaser.Scene) {
+        this.scene = scene;
         this.roads = [];
+        this.roadWidth = 25;
+        this.roadHeight = 25;
     }
 
     // Добавление новой дороги
@@ -14,10 +20,14 @@ export default class RoadManager {
     }
 
     // Фиксация дороги
-    finishRoad(road: Road, endCastle: Castle) {
+    addRoadBetweenCastles(startCastle: Castle, endCastle: Castle) {
         // Здесь логика для окончательной настройки и фиксации дороги
-        // Например, можно установить конечную точку дороги и завершить её строительство
-        // Если нужно, можно здесь же добавить дорогу в общий список
+        const road = new Road(this.scene, this.roadWidth);
+        const startCastleCastelFooterPosY = startCastle.y + startCastle.height * endCastle.scaleY / 2 - this.roadHeight / 2;
+        const endCastleCastelFooterPosY = endCastle.y + endCastle.height * endCastle.scaleY / 2 - this.roadHeight / 2;
+
+        road.update(startCastle.x, startCastleCastelFooterPosY, endCastle.x, endCastleCastelFooterPosY);
+        debugger
         this.addRoad(road);
     }
 

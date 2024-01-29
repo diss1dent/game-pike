@@ -1,3 +1,5 @@
+import { DEPTH } from "../config/constants";
+
 export default class RoadSprite extends Phaser.GameObjects.Sprite {
     constructor(scene: Phaser.Scene, x: number, y: number) {
         super(scene, x, y, 'road'); // 'road' - ключ текстуры дороги
@@ -10,8 +12,10 @@ export default class RoadSprite extends Phaser.GameObjects.Sprite {
                 frameRate: 3,
                 repeat: -1
             });
-        }        
-        //this.anims.play('road-build');
+        }
+        this.setVisible(true);
+        this.anims.play('road-build');
+        this.setDepth(DEPTH.road);
     }
     
 }

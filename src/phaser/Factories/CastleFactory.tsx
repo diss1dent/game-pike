@@ -26,7 +26,6 @@ export default class CastleFactory {
         return castle;
     }
 
-
     createRandomCastles(custlesNumber: number) {
         // Создание замков
         for (let i = 0; i < custlesNumber; i++) {

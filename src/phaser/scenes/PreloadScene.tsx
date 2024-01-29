@@ -16,9 +16,9 @@ class PreloadScene extends Phaser.Scene {
             frameWidth: 1341 / 3 /* ширина фрейма */,
             frameHeight: 1024 / 3/* высота фрейма */
         });
-        this.load.spritesheet('castle_sm', 'assets/images/castle_sm3.png', {
-            frameWidth: 1065 / 8 /* ширина фрейма */,
-            frameHeight: 300 /* высота фрейма */
+        this.load.spritesheet('castle_sm4.1', 'assets/images/castle_sm4.1.png', {
+            frameWidth: 1120 / 8 /* ширина фрейма */,
+            frameHeight: 280 /* высота фрейма */
         });
         this.load.spritesheet('road', 'assets/images/road.png', {
             frameWidth: 25 /* ширина фрейма */,

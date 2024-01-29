@@ -16,7 +16,7 @@ class GameScene extends Phaser.Scene {
         super('GameScene');
         this.castleFactory = new CastleFactory(this);
         this.roadFactory = new RoadFactory(this);
-        this.roadManager = new RoadManager();
+        this.roadManager = new RoadManager(this);
         this.custlesNumber = 10;
         this.selectedCastle = null;
     }
@@ -35,12 +35,17 @@ class GameScene extends Phaser.Scene {
 
         this.events.on('castle-selected', (castle: Castle) => {
             this.selectedCastle = castle;
+            // Запуск создания дороги при выборе замка
+            if (this.selectedCastle) {
+                this.roadFactory.startRoad(this.selectedCastle.x, this.selectedCastle.y);
+            }
         });
     }
 
     handleMouseMove = (pointer: Phaser.Input.Pointer) => {
-        if (this.selectedCastle) {
-            this.roadFactory.updateRoad(pointer.x, pointer.y);
+        if (this.selectedCastle && this.roadFactory.currentRoad) {
+            const startCastleCastelFooterPosY = this.selectedCastle.y + this.selectedCastle.height * this.selectedCastle.scaleY / 2 - this.roadFactory.roadHeight / 2;
+            this.roadFactory.updateRoad(this.selectedCastle.x, startCastleCastelFooterPosY, pointer.x, pointer.y);
         }
     };
 
@@ -51,13 +56,10 @@ class GameScene extends Phaser.Scene {
             );
 
             if (endCastle && endCastle !== this.selectedCastle) {
-                this.roadManager.finishRoad(this.roadFactory.currentRoad, endCastle);
-                this.roadFactory.currentRoad = null;
-            } else {
-                this.roadManager.cancelRoad(this.roadFactory.currentRoad);
-                this.roadFactory.currentRoad = null;
+                this.roadManager.addRoadBetweenCastles(this.selectedCastle, endCastle);
             }
-
+            
+            this.roadFactory.destroyCurrentRoad();
             this.selectedCastle = null;
         }
     };
