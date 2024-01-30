@@ -1,15 +1,22 @@
-import { DEPTH } from "../config/constants";
+import { DEPTH, OWNER } from "../config/constants";
+import { CastleInterface } from "../interfaces/Castle";
 
-export default class Castle extends Phaser.GameObjects.Sprite {
+export default class CastleSprite extends Phaser.GameObjects.Sprite {
     //sprite: Phaser.GameObjects.Sprite;
+    owner: string;
+    parent: CastleInterface;
+    scaleX: number = 0.4;
+    scaleY: number = 0.4;
 
-    constructor(scene: Phaser.Scene, x: number, y: number) {
+    constructor(scene: Phaser.Scene, x: number, y: number, parent: CastleInterface, owner: string) {
         super(scene, x, y, 'castle');
+        this.parent = parent;
+        this.owner = owner;
 
         this.initEvents();
         
         // Масштабирование спрайта
-        this.setScale(0.4, 0.4);
+        this.setScale(this.scaleX, this.scaleY);
       
         // Создание анимации для дороги
         if (!this.scene.anims.exists('castle-stay')) {
@@ -32,23 +39,43 @@ export default class Castle extends Phaser.GameObjects.Sprite {
         // Обработчик события: курсор наведен на замок
         this.on('pointerover', () => {
             this.setTint(0xB3E5FC); // Например, изменение цвета
-            this.setTint(0xBDBDBD); // Например, изменение цвета
         });
 
         // Обработчик события: курсор убран с замка
         this.on('pointerout', () => {
-            this.clearTint(); // Убрать изменения
+            //this.clearTint(); // Убрать изменения
+            this.updateTint();
         });
 
         this.on('pointerdown', () => {
-            this.scene.events.emit('castle-selected', this);
+            this.scene.events.emit('castle-selected', this.parent);
         });
 
     }
 
+    getSize() {
+        return {
+            width: this.width * this.scaleX,
+            height: this.height * this.scaleY
+        }
+    }
+
     startPlay() {
-        // Воспроизведение анимации 'castle-stay'
+        this.updateTint();
         this.anims.play('castle-stay');
+    }
+
+    updateTint() {
+        // Изменение внешнего вида в зависимости от владельца
+        if (this.owner === OWNER.player) {
+            this.setTint(0x42A5F5); // Синий цвет для замка игрока
+        } else if (this.owner === OWNER.computer) {
+            this.setTint(0xEF5350); // Красный цвет для замка компьютера
+        } else {
+            this.setTint(0xBDBDBD); // для нейтральных замков
+            this.setTint(0xFFFFFF); // для нейтральных замков
+            this.setTint(0xFFFFFF); // для нейтральных замков
+        }
     }
 
 }

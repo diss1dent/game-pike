@@ -1,54 +1,47 @@
-import { DEPTH } from "../config/constants";
+import { OWNER } from "../config/constants";
+import { TEXT_STYLE_COMMON } from "../config/phaserUI";
+import { CastleInterface } from "../interfaces/Castle";
+import CastleSprite from "./CastleSprite";
 
-export default class Castle extends Phaser.GameObjects.Sprite {
-    //sprite: Phaser.GameObjects.Sprite;
+export default class Castle implements CastleInterface {
+    scene: Phaser.Scene;
+    castleSprite: CastleSprite;
+    owner: string;
+    level: number;
+    levelText: Phaser.GameObjects.Text;
 
-    constructor(scene: Phaser.Scene, x: number, y: number) {
-        super(scene, x, y, 'castle');
-
-        this.initEvents();
-        
-        // Масштабирование спрайта
-        this.setScale(0.4, 0.4);
-      
-        // Создание анимации для дороги
-        if (!this.scene.anims.exists('castle-stay')) {
-            this.scene.anims.create({
-                key: 'castle-stay',
-                //frames: this.scene.anims.generateFrameNumbers('castle', { start:3, end: 4 }),
-                frames: this.scene.anims.generateFrameNumbers('castle_sm4.1', { frames: [ 2, 3, 4 , 5, 6, 7] }),
-                frameRate: 8,
-                repeat: -1
-            });
-        }
-
-        this.setDepth(DEPTH.castle);
+    constructor(scene: Phaser.Scene,
+        x: number,
+        y: number,
+        owner: string = OWNER.neutral,
+        level: number = 0
+        ) {
+            this.owner = owner;
+            this.scene = scene;
+            this.castleSprite = new CastleSprite(scene, x, y, this, owner);
+            this.level = level;
+            this.levelText = this.createLevel(x, y);
+            
     }
 
-    initEvents() {
-        // Делаем спрайт интерактивным
-        this.setInteractive();
+    createLevel(x: number, y: number) {
+        const castleSize = this.castleSprite.getSize();
+        const levelPoint = {
+            x: x,
+            y: y - castleSize.height / 2
+        }
 
-        // Обработчик события: курсор наведен на замок
-        this.on('pointerover', () => {
-            this.setTint(0xB3E5FC); // Например, изменение цвета
-            this.setTint(0xBDBDBD); // Например, изменение цвета
-        });
-
-        // Обработчик события: курсор убран с замка
-        this.on('pointerout', () => {
-            this.clearTint(); // Убрать изменения
-        });
-
-        this.on('pointerdown', () => {
-            this.scene.events.emit('castle-selected', this);
-        });
-
+        return this.scene.add.text(levelPoint.x, levelPoint.y, `level: ${this.level}`, TEXT_STYLE_COMMON).setOrigin(0.5);
     }
 
     startPlay() {
         // Воспроизведение анимации 'castle-stay'
-        this.anims.play('castle-stay');
+        this.castleSprite.startPlay();
+    }
+
+    updateLevel(level: number) {
+        this.level = level;
+        this.levelText.setText(`level: ${this.level}`);
     }
 
 }

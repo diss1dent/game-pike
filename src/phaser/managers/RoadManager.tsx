@@ -1,9 +1,10 @@
 import Road from '../objects/Road';
-import { Castle } from '../interfaces/Castle';
+import { CastleInterface } from '../interfaces/Castle';
+import { RoadBetweenCastlesInterface, RoadInterface } from '../interfaces/Road';
 
 export default class RoadManager {
     private scene: Phaser.Scene;
-    private roads: Road[];
+    private roads: RoadBetweenCastlesInterface[];
     private roadWidth: number;
     private roadHeight: number;
 
@@ -14,25 +15,26 @@ export default class RoadManager {
         this.roadHeight = 25;
     }
 
-    // Добавление новой дороги
-    addRoad(road: Road) {
-        this.roads.push(road);
+    addRoad(road: RoadInterface) {
+        if (this.isRoadBetweenCastles(road) && !this.roadExists(road.startCastle, road.endCastle)) {
+            this.roads.push(road);
+        }
+    }
+    
+    isRoadBetweenCastles(road: RoadInterface): road is RoadBetweenCastlesInterface {
+        return road.startCastle !== null && road.endCastle !== null;
     }
 
-    // Фиксация дороги
-    addRoadBetweenCastles(startCastle: Castle, endCastle: Castle) {
-        // Здесь логика для окончательной настройки и фиксации дороги
-        const road = new Road(this.scene, this.roadWidth);
-        const startCastleCastelFooterPosY = startCastle.y + startCastle.height * endCastle.scaleY / 2 - this.roadHeight / 2;
-        const endCastleCastelFooterPosY = endCastle.y + endCastle.height * endCastle.scaleY / 2 - this.roadHeight / 2;
+    addRoadBetweenCastles(startCastle: CastleInterface, endCastle: CastleInterface, owner: string) {
+        const road = new Road(this.scene, this.roadWidth, owner, startCastle, endCastle);
+        const startCastleCastelFooterPosY = startCastle.castleSprite.y + startCastle.castleSprite.height * endCastle.castleSprite.scaleY / 2 - this.roadHeight / 2;
+        const endCastleCastelFooterPosY = endCastle.castleSprite.y + endCastle.castleSprite.height * endCastle.castleSprite.scaleY / 2 - this.roadHeight / 2;
 
-        road.update(startCastle.x, startCastleCastelFooterPosY, endCastle.x, endCastleCastelFooterPosY);
-        debugger
+        road.update(startCastle.castleSprite.x, startCastleCastelFooterPosY, endCastle.castleSprite.x, endCastleCastelFooterPosY);
         this.addRoad(road);
     }
 
-    // Удаление дороги
-    cancelRoad(road: Road) {
+    cancelRoad(road: RoadBetweenCastlesInterface) {
         const index = this.roads.indexOf(road);
         if (index !== -1) {
             road.destroy();
@@ -40,10 +42,12 @@ export default class RoadManager {
         }
     }
 
-    // Получение всех дорог
-    getAllRoads(): Road[] {
+    getAllRoads(): RoadBetweenCastlesInterface[] {
         return this.roads;
     }
 
-    // Дополнительные методы по необходимости...
+    roadExists(startCastle: CastleInterface, endCastle:CastleInterface) {
+        return this.roads.some(r => (r.startCastle === startCastle && r.endCastle === endCastle) ||
+                                    (r.startCastle === endCastle && r.endCastle === startCastle));
+    }
 }

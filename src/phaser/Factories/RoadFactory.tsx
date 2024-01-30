@@ -14,9 +14,8 @@ export default class RoadFactory {
     }
 
     // Начало строительства дороги
-    startRoad(startX: number, startY: number) {
-        this.currentRoad = new Road(this.scene, this.roadWidth);
-        //this.currentRoad.addSegment(startX, startY);
+    startRoad(startX: number, startY: number, owner: string) {
+        this.currentRoad = new Road(this.scene, this.roadWidth, owner);
     }
 
     // Обновление дороги

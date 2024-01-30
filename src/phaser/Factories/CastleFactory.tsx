@@ -1,3 +1,4 @@
+import { CASTLE_MAX_LEVEL, OWNER } from "../config/constants";
 import { Point } from "../interfaces/Point";
 import Castle from "../objects/Castle";
 
@@ -19,9 +20,9 @@ export default class CastleFactory {
         this.castles.push(castle);
     }
 
-    createCastle(x: number, y: number) {
-        const castle = new Castle(this.scene, x, y);
-        this.scene.add.existing(castle); // Добавление замка в сцену
+    createCastle(x: number, y: number, owner: string = OWNER.neutral, castleLevel: number = 0) {
+        const castle = new Castle(this.scene, x, y, owner, castleLevel);
+        this.scene.add.existing(castle.castleSprite); // Добавление замка в сцену
         
         return castle;
     }
@@ -30,7 +31,8 @@ export default class CastleFactory {
         // Создание замков
         for (let i = 0; i < custlesNumber; i++) {
             let position = this.getRandomPosition();
-            const castle = this.createCastle(position.x, position.y);
+            let castleLevel = Phaser.Math.Between(25, CASTLE_MAX_LEVEL);
+            const castle = this.createCastle(position.x, position.y, OWNER.neutral, castleLevel);
             castle.startPlay();
             this.addCastle(castle);
         }
@@ -47,7 +49,7 @@ export default class CastleFactory {
             x: this.castleWidth / 2,
             y: gameHeight / 2 - this.castleHeight / 2
         };
-        const castle = this.createCastle(position.x, position.y);
+        const castle = this.createCastle(position.x, position.y, OWNER.player);
         castle.startPlay();
         this.addCastle(castle);
     }
@@ -59,7 +61,7 @@ export default class CastleFactory {
             x: gameWidth - this.castleWidth / 2,
             y: gameHeight / 2 - this.castleHeight / 2
         };
-        const castle = this.createCastle(position.x, position.y);
+        const castle = this.createCastle(position.x, position.y, OWNER.computer);
         castle.startPlay();
         this.addCastle(castle);
     }

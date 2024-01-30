@@ -1,25 +1,23 @@
+import { CastleInterface } from "../interfaces/Castle";
+import { RoadInterface } from "../interfaces/Road";
 import RoadSprite from "./RoadSprite";
 
-export default class Road {
+export default class Road implements RoadInterface {
     private scene: Phaser.Scene;
     private segments: Phaser.GameObjects.Sprite[];
     public roadWidth: number;
-
-    constructor(scene: Phaser.Scene, roadWidth: number) {
+    public owner: string;
+    public startCastle: CastleInterface | null;
+    public endCastle: CastleInterface | null;
+    
+    constructor(scene: Phaser.Scene, roadWidth: number, owner: string, startCastle: CastleInterface | null = null, endCastle: CastleInterface | null = null) {
         this.scene = scene;
         this.segments = [];
         this.roadWidth = roadWidth; // Ширина одного сегмента дороги
+        this.owner = owner;
+        this.startCastle = startCastle;
+        this.endCastle = endCastle;
     }
-
-    // Добавление сегмента дороги
-    // addSegment(x: number, y: number) {
-    //     //const segment = this.scene.add.sprite(x, y, 'road');
-    //     const segment = new RoadSprite(this.scene, x, y);
-    //     segment.anims.play('road-build');
-    //     this.segments.push(segment);
-    //     this.scene.add.existing(segment);
-    //     //console.log("new road", "x:" + x + "; y: " + y);
-    // }
 
     update(startX: number, startY: number, endX: number, endY: number) {
         // Удаляем предыдущие сегменты
@@ -52,6 +50,4 @@ export default class Road {
         this.segments.forEach(segment => segment.destroy());
         this.segments = [];
     }
-
-    // Другие методы по необходимости...
 }
