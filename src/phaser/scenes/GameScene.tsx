@@ -5,6 +5,7 @@ import RoadHelper from '../helpers/RoadHelper';
 import { CastleInterface } from '../interfaces/Castle';
 import Background from '../objects/Background';
 import { CASTLES_THAT_GROWS, CASTLE_MAX_LEVEL, OWNER } from '../config/constants';
+import RoadDeletionHandler from '../handlers/RoadDeletionHandler';
 
 class GameScene extends Phaser.Scene {
     private castleFactory: CastleFactory;
@@ -29,6 +30,7 @@ class GameScene extends Phaser.Scene {
 
         this.castleFactory.createRandomCastles(this.custlesNumber);
         this.castleFactory.createHomeCastles();
+        new RoadDeletionHandler(this, this.roadManager);        
         this.initMouseEvents();
     }
 

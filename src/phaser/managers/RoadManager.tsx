@@ -27,14 +27,21 @@ export default class RoadManager {
 
     addRoadBetweenCastles(startCastle: CastleInterface, endCastle: CastleInterface, owner: string) {
         const road = new Road(this.scene, this.roadWidth, owner, startCastle, endCastle);
-        const startCastleCastelFooterPosY = startCastle.castleSprite.y + startCastle.castleSprite.height * endCastle.castleSprite.scaleY / 2 - this.roadHeight / 2;
-        const endCastleCastelFooterPosY = endCastle.castleSprite.y + endCastle.castleSprite.height * endCastle.castleSprite.scaleY / 2 - this.roadHeight / 2;
+        const startCastleConnectionPoint = this.getConnectionPoint(startCastle);
+        const endCastleConnectionPoint = this.getConnectionPoint(endCastle);
 
-        road.update(startCastle.castleSprite.x, startCastleCastelFooterPosY, endCastle.castleSprite.x, endCastleCastelFooterPosY);
+        road.update(startCastleConnectionPoint.x, startCastleConnectionPoint.y, endCastleConnectionPoint.x, endCastleConnectionPoint.y);
         this.addRoad(road);
     }
 
-    cancelRoad(road: RoadBetweenCastlesInterface) {
+    getConnectionPoint(castle: CastleInterface) {
+        return {
+            x: castle.castleSprite.x,
+            y: castle.castleSprite.y + castle.castleSprite.height * castle.castleSprite.scaleY / 2 - this.roadHeight / 2,
+        }
+    }
+
+    deleteRoad(road: RoadBetweenCastlesInterface) {
         const index = this.roads.indexOf(road);
         if (index !== -1) {
             road.destroy();
