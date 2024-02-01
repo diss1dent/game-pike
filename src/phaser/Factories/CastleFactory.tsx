@@ -1,4 +1,5 @@
 import { CASTLE_MAX_LEVEL, OWNER } from "../config/constants";
+import { CastleManagerInterface } from "../interfaces/Manager";
 import { Point } from "../interfaces/Point";
 import Castle from "../objects/Castle";
 
@@ -6,18 +7,18 @@ export default class CastleFactory {
     scene;
     castleWidth: number;
     castleHeight: number;
-    castles: any[];
+    manager: CastleManagerInterface
 
-    constructor(scene: Phaser.Scene) {
+    constructor(scene: Phaser.Scene, manager: CastleManagerInterface) {
         this.scene = scene;
-        this.castles = [];
+        this.manager = manager;
         this.castleWidth = 80; // Задайте реальные размеры
         this.castleHeight = 110; // Задайте реальные размеры
         // Предположим, что анимация уже создана в сцене
     }
 
     addCastle(castle:Castle) {
-        this.castles.push(castle);
+        this.manager.add(castle);
     }
 
     createCastle(x: number, y: number, owner: string = OWNER.neutral, castleLevel: number = 0) {
@@ -79,7 +80,7 @@ export default class CastleFactory {
                 y: Phaser.Math.Between(this.castleHeight / 2, gameHeight - this.castleHeight - this.castleHeight / 2)
             };
 
-            for (const castle of this.castles) {
+            for (const castle of this.manager.getAll()) {
                 if (this.isOverlapping(position, castle)) {
                     overlap = true;
                     break;

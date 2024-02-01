@@ -6,9 +6,11 @@ import { CastleInterface } from '../interfaces/Castle';
 import Background from '../objects/Background';
 import { CASTLES_THAT_GROWS, CASTLE_MAX_LEVEL, OWNER } from '../config/constants';
 import RoadDeletionHandler from '../handlers/RoadDeletionHandler';
+import CastleManager from '../managers/CastleManager';
 
 class GameScene extends Phaser.Scene {
     private castleFactory: CastleFactory;
+    private castleManager: CastleManager;
     private roadFactory: RoadFactory;
     private roadManager: RoadManager;
     private custlesNumber: number;
@@ -17,7 +19,8 @@ class GameScene extends Phaser.Scene {
 
     constructor() {
         super('GameScene');
-        this.castleFactory = new CastleFactory(this);
+        this.castleManager = new CastleManager(this);
+        this.castleFactory = new CastleFactory(this, this.castleManager);
         this.roadFactory = new RoadFactory(this);
         this.roadManager = new RoadManager(this);
         this.custlesNumber = 10;
@@ -56,7 +59,7 @@ class GameScene extends Phaser.Scene {
 
     handleMouseUp = (pointer: Phaser.Input.Pointer) => {
         if (this.selectedCastle && this.roadFactory.currentRoad) {
-            let endCastle = this.castleFactory.castles.find(castle =>
+            let endCastle = this.castleManager.getAll().find(castle =>
                 castle.castleSprite.getBounds().contains(pointer.x, pointer.y)
             );
 
@@ -73,7 +76,7 @@ class GameScene extends Phaser.Scene {
         // Обновление элементов сцены
         // Периодическое увеличение уровней замков игрока и компьютера
         if (time - this.lastUpdateTime > 1000) { // Каждую секунду
-            this.castleFactory.castles.forEach(castle => {
+            this.castleManager.getAll().forEach(castle => {
                 if ((CASTLES_THAT_GROWS.includes(castle.owner)) && castle.level < CASTLE_MAX_LEVEL) {
                     castle.updateLevel(castle.level + 1); // Увеличиваем уровень
                 }
