@@ -1,17 +1,20 @@
+import { CastleManagerInterface } from "../interfaces/Manager";
 import { RoadBetweenCastlesInterface } from "../interfaces/Road";
 import RoadManager from "../managers/RoadManager";
 
 export default class RoadDeletionHandler {
     private scene: Phaser.Scene;
     private roadManager: RoadManager;
+    private castleManager: CastleManagerInterface;
     private startPoint: Phaser.Math.Vector2 | null;
     private endPoint: Phaser.Math.Vector2 | null;
 
     private graphics: Phaser.GameObjects.Graphics;
 
-    constructor(scene: Phaser.Scene, roadManager: RoadManager) {
+    constructor(scene: Phaser.Scene, roadManager: RoadManager, castleManager: CastleManagerInterface) {
         this.scene = scene;
         this.roadManager = roadManager;
+        this.castleManager = castleManager;
         this.startPoint = null;
         this.endPoint = null;
 
@@ -22,7 +25,24 @@ export default class RoadDeletionHandler {
     }    
 
     handlePointerDown(pointer: PointerEvent) {
-        this.startPoint = new Phaser.Math.Vector2(pointer.x, pointer.y);
+        const startPoint = new Phaser.Math.Vector2(pointer.x, pointer.y);
+        // Check if the startPoint is within any castle
+        if (this.isPointInsideAnyCastle(startPoint)) {
+            // If startPoint is inside a castle, consider this as an intent to draw a road.
+            this.startPoint = null;
+            return;
+        }
+        this.startPoint = startPoint
+    }
+    
+    isPointInsideAnyCastle(point: Phaser.Math.Vector2): boolean {
+        for (let castle of this.castleManager.getAll()) {
+            if (castle.containsPoint(point)) {
+                return true;
+            }
+        }
+
+        return false;
     }
 
     handlePointerUp(pointer: PointerEvent) {

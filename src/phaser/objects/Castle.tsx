@@ -9,6 +9,7 @@ export default class Castle implements CastleInterface {
     owner: string;
     level: number;
     levelText: Phaser.GameObjects.Text;
+    strength: number;
 
     constructor(scene: Phaser.Scene,
         x: number,
@@ -21,6 +22,8 @@ export default class Castle implements CastleInterface {
             this.castleSprite = new CastleSprite(scene, x, y, this, owner);
             this.level = level;
             this.levelText = this.createLevel(x, y);
+            this.strength = 1; // Initialize strength
+            this.updateStrengthBasedOnLevel(); // Initial strength adjustment based on level
             
     }
 
@@ -42,6 +45,22 @@ export default class Castle implements CastleInterface {
     updateLevel(level: number) {
         this.level = level;
         this.levelText.setText(`level: ${this.level}`);
+        this.updateStrengthBasedOnLevel();
+    }
+
+    updateStrengthBasedOnLevel() {
+        // Reset strength to base before applying level-based adjustments
+        this.strength = 1; 
+        if (this.level > 60) {
+            this.strength += 2; // Add 1 more strength for levels over 60
+        } else if (this.level > 30) {
+            this.strength += 1; // Add 1 strength for levels over 30
+        }
+    }
+
+    containsPoint(point: Phaser.Math.Vector2): boolean {
+        const bounds = this.castleSprite.getBounds();
+        return bounds.contains(point.x, point.y);
     }
 
 }

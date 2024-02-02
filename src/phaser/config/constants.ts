@@ -15,3 +15,4 @@ export const CASTLES_THAT_GROWS = [
 ]
 
 export const CASTLE_MAX_LEVEL = 100;
+export const CASTLE_GROWTH_TIME = 1000;

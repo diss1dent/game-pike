@@ -1,4 +1,5 @@
-import { CASTLE_MAX_LEVEL, OWNER } from "../config/constants";
+import { OWNER } from "../config/constants";
+import gameConfig from "../config/gameConfig";
 import { CastleManagerInterface } from "../interfaces/Manager";
 import { Point } from "../interfaces/Point";
 import Castle from "../objects/Castle";
@@ -32,7 +33,7 @@ export default class CastleFactory {
         // Создание замков
         for (let i = 0; i < custlesNumber; i++) {
             let position = this.getRandomPosition();
-            let castleLevel = Phaser.Math.Between(25, CASTLE_MAX_LEVEL);
+            let castleLevel = Phaser.Math.Between(25, gameConfig.castleMaxLevel);
             const castle = this.createCastle(position.x, position.y, OWNER.neutral, castleLevel);
             castle.startPlay();
             this.addCastle(castle);
@@ -81,7 +82,7 @@ export default class CastleFactory {
             };
 
             for (const castle of this.manager.getAll()) {
-                if (this.isOverlapping(position, castle)) {
+                if (this.isOverlapping(position, castle.castleSprite)) {
                     overlap = true;
                     break;
                 }

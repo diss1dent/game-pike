@@ -1,3 +1,4 @@
+import { OWNER } from "../config/constants";
 import { CastleInterface } from "../interfaces/Castle";
 import { CastleManagerInterface } from "../interfaces/Manager";
 import { EntityManager } from "./EntityManager";
@@ -8,6 +9,30 @@ export default class CastleManager extends EntityManager<CastleInterface> implem
     constructor(scene: Phaser.Scene) {
         super();
         this.scene = scene;
+    }
+
+    findClosestCastleWithOwners(castle: CastleInterface, owners: string[]) {
+        // Identify neutral castles that can be targeted for capture
+        const potentialTargets = this.getAll().filter(target => 
+            owners.includes(target.owner) && target !== castle
+        );
+
+        let closestCastle = null;
+        let minDistance = Infinity;
+
+        potentialTargets.forEach(target => {
+            const distance = Phaser.Math.Distance.Between(
+                castle.castleSprite.x, castle.castleSprite.y,
+                target.castleSprite.x, target.castleSprite.y
+            );
+
+            if (distance < minDistance) {
+                minDistance = distance;
+                closestCastle = target;
+            }
+        });
+
+        return closestCastle;
     }
 
     //todo

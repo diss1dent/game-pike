@@ -5,6 +5,8 @@ export interface CastleInterface {
     castleSprite: CastleSprite;
     owner: string;
     level: number;
+    strength: number;
     levelText: Phaser.GameObjects.Text;
     updateLevel(level: number): void
+    containsPoint(point: Phaser.Math.Vector2): boolean
 }

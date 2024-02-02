@@ -57,4 +57,8 @@ export default class RoadManager {
         return this.roads.some(r => (r.startCastle === startCastle && r.endCastle === endCastle) ||
                                     (r.startCastle === endCastle && r.endCastle === startCastle));
     }
+
+    getRoadsConnectedToCastle(castle: CastleInterface) {
+        return this.roads.filter(r => r.startCastle === castle && r.endCastle === castle);
+    }
 }
