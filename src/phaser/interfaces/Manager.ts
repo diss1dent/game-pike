@@ -8,5 +8,5 @@ export interface EntityManagerInterface<T> {
 
 export interface CastleManagerInterface extends EntityManagerInterface<CastleInterface> {
     findClosestCastleWithOwners(computerCastle: CastleInterface, owners: string[]): CastleInterface | null;
-    updateCastleLevels(): void;
+    getAllCastlesByOwner(owner: string): CastleInterface[];
 }

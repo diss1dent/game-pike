@@ -36,14 +36,18 @@ export default class CastleManager extends EntityManager<CastleInterface> implem
     }
 
     //todo
-    updateCastleLevels(): void {
-        this.getAll().forEach(castle => {
-            if (castle.owner === OWNER.neutral) {
-                // Example logic: decrease level of neutral castles connected to a player's castle
-            } else if (castle.owner === OWNER.player) {
-                // Example logic: prevent growth of player's castles connected to neutral ones
-            }
-            // Implement the specific logic for updating castle levels here
-        });
+    // updateCastleLevels(): void {
+    //     this.getAll().forEach(castle => {
+    //         if (castle.owner === OWNER.neutral) {
+    //             // Example logic: decrease level of neutral castles connected to a player's castle
+    //         } else if (castle.owner === OWNER.player) {
+    //             // Example logic: prevent growth of player's castles connected to neutral ones
+    //         }
+    //         // Implement the specific logic for updating castle levels here
+    //     });
+    // }
+
+    getAllCastlesByOwner(owner: string): CastleInterface[] {
+        return this.getAll().filter(castle => castle.owner === owner)
     }
 }

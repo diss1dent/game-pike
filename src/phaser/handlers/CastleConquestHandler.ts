@@ -22,7 +22,6 @@ export default class CastleConquestHandler {
         if (time - this.lastUpdateTime > gameConfig.castleGrowthTime) {
             this.castleManager.getAll().forEach((castle: CastleInterface) => {
                 // Проверяем, есть ли дороги, ведущие к замку
-                const outgoingRoads = this.roadManager.getOutgoingRoadsFromCastle(castle);
                 const incomingRoads = this.roadManager.getIncomingRoadsToCastle(castle);
                 const incomingEnemyRoads = incomingRoads.filter(testCastle => testCastle.owner !== castle.owner);
                 const incomingOwnRoads = incomingRoads.filter(testCastle => testCastle.owner === castle.owner);
@@ -36,12 +35,7 @@ export default class CastleConquestHandler {
                         this.conquerCastle(castle, incomingEnemyRoads[0].owner);
                     }
                 }
-                
-                // Если замок принадлежит игроку или компьютеру, его уровень увеличивается, только если к нему нет вражеских дорог
-                else if ((castle.owner === OWNER.player || castle.owner === OWNER.computer) && incomingEnemyRoads.length === 0) {
-                    const defaultGrowthRate = this.calculateDefaultGrowthRate(outgoingRoads);
-                    castle.setLevel(castle.level + defaultGrowthRate);
-                }
+            
             });
             this.lastUpdateTime = time;
         }
@@ -63,10 +57,6 @@ export default class CastleConquestHandler {
         return incomongPower;
     }
 
-    calculateDefaultGrowthRate(outgoingRoads: RoadBetweenCastlesInterface[]): number {       
-        return outgoingRoads.length > 0 ? 0 : 1;
-    }
-
     getSingleRoadStrength(castle: CastleInterface): number {
         const castleRoads = this.roadManager.getOutgoingRoadsFromCastle(castle);
 
@@ -74,8 +64,15 @@ export default class CastleConquestHandler {
     }
 
     conquerCastle(castle: CastleInterface, newOwner: string) {
+        this.roadManager.deleteOutgoingCastleRoads(castle);
         castle.owner = newOwner;
         castle.castleSprite.updateTint();
+
+        if (this.castleManager.getAllCastlesByOwner(OWNER.computer).length <= 0) {
+            this.scene.scene.start('VictoryScene'); 
+        } else if (this.castleManager.getAllCastlesByOwner(OWNER.player).length <= 0) {
+            this.scene.scene.start('GameOverScene'); 
+        }
     }
 
 }

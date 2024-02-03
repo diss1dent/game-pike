@@ -46,6 +46,17 @@ export default class RoadManager {
         }
     }
 
+    deleteOutgoingCastleRoads(castle: CastleInterface) {
+        this.roads = this.roads.filter(road => {
+            if (road.startCastle === castle) {
+                road.destroy();
+                return false;
+            }
+            return true;
+        });
+        
+    }
+
     getAllRoads(): RoadBetweenCastlesInterface[] {
         return this.roads;
     }

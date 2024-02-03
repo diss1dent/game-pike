@@ -1,5 +1,5 @@
 // Стиль для кнопки
-export const buttonStyle:Phaser.GameObjects.TextStyle = {
+export const blueButtonStyle:Phaser.GameObjects.TextStyle = {
     fontSize: '32px',
     fontFamily: 'Play',
     color: '#ffffff',

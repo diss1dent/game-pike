@@ -1,8 +1,8 @@
 import TextButton from "../components/TextButton";
 
-class GameOverScene extends Phaser.Scene {
+class VictoryScene extends Phaser.Scene {
     constructor() {
-        super('GameOverScene');
+        super('VictoryScene');
     }
 
     create() {
@@ -10,7 +10,7 @@ class GameOverScene extends Phaser.Scene {
         this.cameras.main.setBackgroundColor('#B2EBF2');
 
         // Добавляем заголовок "Game Over"
-        this.add.text(this.cameras.main.width / 2, this.cameras.main.height / 2 - 100, 'Game Over', {
+        this.add.text(this.cameras.main.width / 2, this.cameras.main.height / 2 - 100, 'YOU WIN :)', {
             font: '40px Arial',
             fill: '#ffffff'
         }).setOrigin(0.5);
@@ -22,4 +22,4 @@ class GameOverScene extends Phaser.Scene {
     }
 }
 
-export default GameOverScene;
+export default VictoryScene;

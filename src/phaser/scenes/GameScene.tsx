@@ -11,17 +11,21 @@ import { AIHandler } from '../handlers/AIHandler';
 import { GAME_LEVEL } from '../config/constants';
 
 class GameScene extends Phaser.Scene {
-    private castleFactory: CastleFactory;
-    private castleManager: CastleManager;
-    private roadFactory: RoadFactory;
-    private roadManager: RoadManager;
-    private custlesNumber: number;
-    private lastUpdateTime: number;
-    private castleConquestHandler: CastleConquestHandler;
-    private aiHandler: AIHandler;
+    private castleFactory!: CastleFactory;
+    private castleManager!: CastleManager;
+    private roadFactory!: RoadFactory;
+    private roadManager!: RoadManager;
+    private custlesNumber: number = 10; // Можно оставить начальное значение здесь, так как оно не зависит от контекста сцены
+    private lastUpdateTime!: number;
+    private castleConquestHandler!: CastleConquestHandler;
+    private aiHandler!: AIHandler;
 
     constructor() {
         super('GameScene');
+        
+    }
+
+    create() {
         this.castleManager = new CastleManager(this);
         this.castleFactory = new CastleFactory(this, this.castleManager);
         this.roadManager = new RoadManager(this);
@@ -31,9 +35,7 @@ class GameScene extends Phaser.Scene {
 
         this.castleConquestHandler = new CastleConquestHandler(this, this.castleManager, this.roadManager);
         this.aiHandler = new AIHandler(this, this.castleManager, this.roadManager, this.roadFactory);
-    }
-
-    create() {
+        
         Background.setFullScreen(this, 'background2');
         this.castleFactory.createRandomCastles(this.custlesNumber);
         this.castleFactory.createHomeCastles(GAME_LEVEL.level2);

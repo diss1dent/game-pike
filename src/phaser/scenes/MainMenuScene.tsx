@@ -1,4 +1,4 @@
-import { buttonStyle } from "../config/phaserUI";
+import TextButton from "../components/TextButton";
 import Background from "../objects/Background";
 
 class MainMenuScene extends Phaser.Scene {
@@ -23,14 +23,9 @@ class MainMenuScene extends Phaser.Scene {
         const centerY = this.scale.height / 2;
 
         // Добавляем текстовую кнопку для начала игры
-        let playButton = this.add.text(centerX, centerY, 'Play', buttonStyle)
-            .setShadow(5, 5, 'rgba(0,0,0,0.5)', 15)
-            .setInteractive()
-            .setOrigin(0.5) // Центрирование текста относительно координат кнопки
-            .on('pointerdown', () => this.scene.start('GameScene')); // Переход к GameScene при нажатии
-
-
-        void playButton;
+        new TextButton(this, centerX, centerY, 'Start', () => {
+            this.scene.start('GameScene');
+        });
     }
 
 }

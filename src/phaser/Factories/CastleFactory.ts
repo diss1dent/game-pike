@@ -120,7 +120,6 @@ export default class CastleFactory {
         const gameWidth = Number(this.scene.game.config.width);
         const gameHeight = Number(this.scene.game.config.height);
 
-        debugger
         switch (gameLevel) {
             case GAME_LEVEL.level1:                
                 return {

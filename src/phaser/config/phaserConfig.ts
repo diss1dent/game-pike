@@ -21,6 +21,7 @@ import PreloadScene from '../scenes/PreloadScene';
 import MainMenuScene from '../scenes/MainMenuScene';
 import GameScene from '../scenes/GameScene';
 import GameOverScene from '../scenes/GameOverScene';
+import VictoryScene from '../scenes/VictoryScene';
 
 export const phaserConfig = {
     title: 'Pike',
@@ -41,7 +42,8 @@ export const phaserConfig = {
         PreloadScene,  // Сцена для предзагрузки ассетов
         MainMenuScene, // Сцена главного меню
         GameScene,     // Основная игровая сцена
-        GameOverScene  // Сцена окончания игры
+        GameOverScene,  // Сцена окончания игры
+        VictoryScene  // Сцена окончания игры
     ],
     audio: {
         disableWebAudio: false // Включить Web Audio API
