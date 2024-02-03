@@ -1,4 +1,5 @@
 import { DEPTH } from "../config/constants";
+import { gameDesign } from "../config/gameConfig";
 
 export default class RoadSprite extends Phaser.GameObjects.Sprite {
     constructor(scene: Phaser.Scene, x: number, y: number) {
@@ -13,6 +14,7 @@ export default class RoadSprite extends Phaser.GameObjects.Sprite {
                 repeat: -1
             });
         }
+        this.setScale(gameDesign.roadWidth / 25, gameDesign.roadHeight / 25);
         this.setVisible(true);
         this.anims.play('road-build');
         this.setDepth(DEPTH.road);

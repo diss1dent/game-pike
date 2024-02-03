@@ -1,5 +1,6 @@
 import RoadFactory from "../Factories/RoadFactory";
 import { OWNER } from "../config/constants";
+import { gameDesign } from "../config/gameConfig";
 import { CastleInterface } from "../interfaces/Castle";
 import CastleManager from "../managers/CastleManager";
 import RoadManager from "../managers/RoadManager";
@@ -42,7 +43,7 @@ export class RoadConstructionHandler {
             // Update the road's end position to follow the mouse
             const startCastlePos = {
                 x: this.selectedCastle.castleSprite.x,
-                y: this.selectedCastle.castleSprite.y + this.selectedCastle.castleSprite.height * this.selectedCastle.castleSprite.scaleY / 2 - this.roadFactory.roadHeight / 2,
+                y: this.selectedCastle.castleSprite.y + this.selectedCastle.castleSprite.height * this.selectedCastle.castleSprite.scaleY / 2 - gameDesign.roadHeight / 2,
             };
             this.roadFactory.updateRoad(startCastlePos.x, startCastlePos.y, pointer.x, pointer.y);
         }

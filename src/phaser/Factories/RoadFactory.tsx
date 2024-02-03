@@ -6,20 +6,16 @@ export default class RoadFactory {
     private scene: Phaser.Scene;
     private manager: RoadManager;
     public currentRoad: Road | null;
-    public roadWidth: number;
-    public roadHeight: number;
 
     constructor(scene: Phaser.Scene, manager: RoadManager) {
         this.scene = scene;
         this.currentRoad = null;
-        this.roadWidth = 25;
-        this.roadHeight = 25;
         this.manager = manager;
     }
 
     // start building a new road
     startRoad(startX: number, startY: number, owner: string) {
-        this.currentRoad = new Road(this.scene, this.roadWidth, owner);
+        this.currentRoad = new Road(this.scene, owner);
     }
 
     // check if we can start building a new road

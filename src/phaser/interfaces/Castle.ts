@@ -1,6 +1,6 @@
 import CastleSprite from "../objects/CastleSprite";
 
-export interface CastleInterface {
+export interface CastleInterface {   
     scene: Phaser.Scene;
     castleSprite: CastleSprite;
     owner: string;

@@ -1,7 +1,6 @@
 import { CastleInterface } from "./Castle";
 
 export interface RoadInterface {
-    roadWidth: number;
     owner: string;
     startCastle: CastleInterface | null;
     endCastle: CastleInterface | null;

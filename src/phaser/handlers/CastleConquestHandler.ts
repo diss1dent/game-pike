@@ -1,14 +1,16 @@
 import { OWNER } from "../config/constants";
-import RoadManager from "../managers/RoadManager";
 import { CastleManagerInterface } from "../interfaces/Manager";
 import { CastleInterface } from "../interfaces/Castle";
+import RoadManager from "../managers/RoadManager";
 import gameConfig from "../config/gameConfig";
+import { RoadBetweenCastlesInterface } from "../interfaces/Road";
 
-export class CastleConquestHandler {
-    scene: any;
-    castleManager: any;
+export default class CastleConquestHandler {
+    scene: Phaser.Scene;
+    castleManager: CastleManagerInterface;
     roadManager: RoadManager;
     lastUpdateTime: number;
+
     constructor(scene: Phaser.Scene, castleManager: CastleManagerInterface, roadManager: RoadManager) {
         this.scene = scene;
         this.castleManager = castleManager;
@@ -17,53 +19,53 @@ export class CastleConquestHandler {
     }
 
     update(time: number) {
-        if (time - this.lastUpdateTime > gameConfig.castleGrowthTime) { // Every second
+        if (time - this.lastUpdateTime > gameConfig.castleGrowthTime) {
             this.castleManager.getAll().forEach((castle: CastleInterface) => {
-                // Decrease level for neutral castles connected to a player or computer
-                if (castle.owner === OWNER.neutral && this.isConnectedToAnyCastle(castle) && castle.level > 0) {
-                    castle.updateLevel(castle.level - 1);
-                    // Check if the castle should be conquered
-                    if (castle.level === 0) {
-                        this.conquerCastle(castle);
+                // Проверяем, есть ли дороги, ведущие к замку от противника
+                const incomingRoadsFromEnemy = this.incomingRoadsFromEnemy(castle);
+
+                // Если замок нейтральный и к нему ведет дорога, его уровень начинает уменьшаться
+                if (castle.owner === OWNER.neutral && incomingRoadsFromEnemy.length > 0) {
+                    const reductionSpeed = this.calculateReductionSpeed(castle, incomingRoadsFromEnemy);
+                    castle.updateLevel(castle.level - reductionSpeed);
+                    if (castle.level <= 0) {
+                        this.conquerCastle(castle, incomingRoadsFromEnemy[0].owner);
                     }
-                } else if ((castle.owner === OWNER.player || castle.owner === OWNER.computer) && castle.level < gameConfig.castleMaxLevel) {
-                    // Increase level of player's or computer's castle if not connected to neutral
-                    if (!this.isConnectedToNeutralCastle(castle)) {
-                        castle.updateLevel(castle.level + 1);
-                    }
+                }
+                // Если замок принадлежит игроку или компьютеру, его уровень увеличивается, только если к нему нет вражеских дорог
+                else if ((castle.owner === OWNER.player || castle.owner === OWNER.computer) && incomingRoadsFromEnemy.length === 0 && castle.level < gameConfig.castleMaxLevel) {
+                    castle.updateLevel(castle.level + 1);
                 }
             });
             this.lastUpdateTime = time;
         }
     }
 
-    isConnectedToAnyCastle(castle: CastleInterface) {
-        return this.roadManager.getAllRoads().some(road => 
-            road.startCastle === castle || road.endCastle === castle
+    incomingRoadsFromEnemy(castle: CastleInterface): RoadBetweenCastlesInterface[] {
+        return this.roadManager.getAllRoads().filter(road =>
+            (road.endCastle === castle && road.startCastle.owner !== castle.owner) ||
+            (road.startCastle === castle && road.endCastle.owner !== castle.owner)
         );
     }
 
-    conquerCastle(castle: CastleInterface) {
-        // Determine new owner based on connected roads
-        const connectedRoad = this.roadManager.getAllRoads().find(road => 
-            road.endCastle === castle || road.startCastle === castle
-        );
-        if (connectedRoad) {
-            castle.owner = connectedRoad.owner; // Conquer castle
-        }
+    calculateReductionSpeed(castle: CastleInterface, incomingRoads: RoadBetweenCastlesInterface[]): number {
+        let incomongPower = 0;
+        incomingRoads.forEach(road => {
+            incomongPower += this.getSingleRoadStrength(road.startCastle);
+        });
+        
+        return incomongPower;
     }
 
-    isConnectedToPlayerCastle(neutralCastle: CastleInterface) {
-        return this.roadManager.getAllRoads().some(road => 
-            road.owner === OWNER.player && (road.startCastle === neutralCastle || road.endCastle === neutralCastle)
-        );
+    getSingleRoadStrength(castle: CastleInterface): number {
+        const castleRoads = this.roadManager.getCastleRoads(castle);
+
+        return castle.strength / castleRoads.length;
     }
 
-    isConnectedToNeutralCastle(playerCastle: CastleInterface) {
-        return this.roadManager.getAllRoads().some(road => 
-            road.owner === OWNER.player && (road.startCastle.owner === OWNER.neutral || road.endCastle.owner === OWNER.neutral)
-        );
+    conquerCastle(castle: CastleInterface, newOwner: string) {
+        castle.owner = newOwner;
+        castle.castleSprite.updateTint();
     }
+
 }
-
-export default CastleConquestHandler;

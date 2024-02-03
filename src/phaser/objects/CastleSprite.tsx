@@ -3,15 +3,13 @@ import { CastleInterface } from "../interfaces/Castle";
 
 export default class CastleSprite extends Phaser.GameObjects.Sprite {
     //sprite: Phaser.GameObjects.Sprite;
-    owner: string;
     parent: CastleInterface;
     scaleX: number = 0.4;
     scaleY: number = 0.4;
 
-    constructor(scene: Phaser.Scene, x: number, y: number, parent: CastleInterface, owner: string) {
+    constructor(scene: Phaser.Scene, x: number, y: number, parent: CastleInterface) {
         super(scene, x, y, 'castle');
         this.parent = parent;
-        this.owner = owner;
 
         this.initEvents();
         
@@ -67,9 +65,9 @@ export default class CastleSprite extends Phaser.GameObjects.Sprite {
 
     updateTint() {
         // Изменение внешнего вида в зависимости от владельца
-        if (this.owner === OWNER.player) {
+        if (this.parent.owner === OWNER.player) {
             this.setTint(0x42A5F5); // Синий цвет для замка игрока
-        } else if (this.owner === OWNER.computer) {
+        } else if (this.parent.owner === OWNER.computer) {
             this.setTint(0xEF5350); // Красный цвет для замка компьютера
         } else {
             this.setTint(0xBDBDBD); // для нейтральных замков

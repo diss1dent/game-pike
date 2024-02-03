@@ -19,7 +19,7 @@ export default class Castle implements CastleInterface {
         ) {
             this.owner = owner;
             this.scene = scene;
-            this.castleSprite = new CastleSprite(scene, x, y, this, owner);
+            this.castleSprite = new CastleSprite(scene, x, y, this);
             this.level = level;
             this.levelText = this.createLevel(x, y);
             this.strength = 1; // Initialize strength
@@ -62,5 +62,4 @@ export default class Castle implements CastleInterface {
         const bounds = this.castleSprite.getBounds();
         return bounds.contains(point.x, point.y);
     }
-
 }

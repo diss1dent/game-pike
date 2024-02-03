@@ -1,18 +1,15 @@
 import Road from '../objects/Road';
 import { CastleInterface } from '../interfaces/Castle';
 import { RoadBetweenCastlesInterface, RoadInterface } from '../interfaces/Road';
+import { gameDesign } from '../config/gameConfig';
 
 export default class RoadManager {
     private scene: Phaser.Scene;
     private roads: RoadBetweenCastlesInterface[];
-    private roadWidth: number;
-    private roadHeight: number;
 
     constructor(scene: Phaser.Scene) {
         this.scene = scene;
         this.roads = [];
-        this.roadWidth = 25;
-        this.roadHeight = 25;
     }
 
     addRoad(road: RoadInterface) {
@@ -26,7 +23,7 @@ export default class RoadManager {
     }
 
     addRoadBetweenCastles(startCastle: CastleInterface, endCastle: CastleInterface, owner: string) {
-        const road = new Road(this.scene, this.roadWidth, owner, startCastle, endCastle);
+        const road = new Road(this.scene, owner, startCastle, endCastle);
         const startCastleConnectionPoint = this.getConnectionPoint(startCastle);
         const endCastleConnectionPoint = this.getConnectionPoint(endCastle);
 
@@ -37,7 +34,7 @@ export default class RoadManager {
     getConnectionPoint(castle: CastleInterface) {
         return {
             x: castle.castleSprite.x,
-            y: castle.castleSprite.y + castle.castleSprite.height * castle.castleSprite.scaleY / 2 - this.roadHeight / 2,
+            y: castle.castleSprite.y + castle.castleSprite.height * castle.castleSprite.scaleY / 2 - gameDesign.roadHeight / 2,
         }
     }
 
@@ -60,5 +57,13 @@ export default class RoadManager {
 
     getRoadsConnectedToCastle(castle: CastleInterface) {
         return this.roads.filter(r => r.startCastle === castle && r.endCastle === castle);
+    }
+    
+    getCastleRoads(castle: CastleInterface): RoadInterface[] {
+        return this.roads.filter(r => r.startCastle === castle);
+    }
+
+    getConectedRoads(castle: CastleInterface): RoadInterface[] {
+        return this.roads.filter(r => r.endCastle === castle);
     }
 }
