@@ -46,7 +46,7 @@ export class AIHandler {
         // Here, the AI evaluates whether to focus on defense or expansion based on the current game state
         const computerCastles = this.castleManager.getAll().filter(castle => castle.owner === OWNER.computer);
         computerCastles.forEach(castle => {
-            const connectedRoads = this.roadManager.getRoadsConnectedToCastle(castle);
+            const connectedRoads = this.roadManager.getAllCastleRoads(castle);
             if (connectedRoads.length < castle.level / 30) {
                 // This allows for an additional road every 30 levels
                 const potentialTargets = this.identifyPotentialTargets(castle);

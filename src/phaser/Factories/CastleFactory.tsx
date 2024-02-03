@@ -1,4 +1,4 @@
-import { OWNER } from "../config/constants";
+import { GAME_LEVEL, OWNER } from "../config/constants";
 import gameConfig from "../config/gameConfig";
 import { CastleManagerInterface } from "../interfaces/Manager";
 import { Point } from "../interfaces/Point";
@@ -40,29 +40,20 @@ export default class CastleFactory {
         }
     }
 
-    createHomeCastles = () => {
-        this.createLeftSideCastle();
-        this.createRightSideCastle();
+    createHomeCastles = (gameLevel: string) => {
+        this.createPlayerCastle(gameLevel);
+        this.createComputerCastle(gameLevel);
     }
 
-    createLeftSideCastle = () => {
-        const gameHeight = Number(this.scene.game.config.height);
-        const position = {
-            x: this.castleWidth / 2,
-            y: gameHeight / 2 - this.castleHeight / 2
-        };
+    createPlayerCastle = (gameLevel: string) => {
+        const position = this.getPlayerPosition(gameLevel);
         const castle = this.createCastle(position.x, position.y, OWNER.player);
         castle.startPlay();
         this.addCastle(castle);
     }
 
-    createRightSideCastle = () => {
-        const gameWidth = Number(this.scene.game.config.width);
-        const gameHeight = Number(this.scene.game.config.height);
-        const position = {
-            x: gameWidth - this.castleWidth / 2,
-            y: gameHeight / 2 - this.castleHeight / 2
-        };
+    createComputerCastle = (gameLevel: string) => {
+        const position = this.getComputerPosition(gameLevel);
         const castle = this.createCastle(position.x, position.y, OWNER.computer);
         castle.startPlay();
         this.addCastle(castle);
@@ -97,5 +88,58 @@ export default class CastleFactory {
                pos1.x + this.castleWidth > pos2.x &&
                pos1.y < pos2.y + this.castleHeight &&
                pos1.y + this.castleHeight > pos2.y;
+    }
+
+    getPlayerPosition(gameLevel: string) {
+        const gameHeight = Number(this.scene.game.config.height);
+        const gameWidth = Number(this.scene.game.config.width);
+
+        switch (gameLevel) {
+            case GAME_LEVEL.level1:                
+                return {
+                    x: this.castleWidth / 2,
+                    y: gameHeight / 2 - this.castleHeight / 2
+                };
+            case GAME_LEVEL.level2:
+                return {
+                    x: this.castleWidth / 2 + gameWidth * 0.16,
+                    y: gameHeight / 2 * 1.1 - this.castleHeight / 2
+                };
+                break;
+        
+            default:
+                return {
+                    x: this.castleWidth / 2,
+                    y: gameHeight / 2 - this.castleHeight / 2
+                };
+                break;
+        }
+    }
+
+    getComputerPosition(gameLevel: string) {
+        const gameWidth = Number(this.scene.game.config.width);
+        const gameHeight = Number(this.scene.game.config.height);
+
+        debugger
+        switch (gameLevel) {
+            case GAME_LEVEL.level1:                
+                return {
+                    x: gameWidth - this.castleWidth / 2,
+                    y: gameHeight / 2 - this.castleHeight / 2
+                };
+            case GAME_LEVEL.level2:
+                return {
+                    x: gameWidth * 0.9 - this.castleWidth / 2,
+                    y: gameHeight / 2 * 1.07 - this.castleHeight / 2
+                };
+                break;
+        
+            default:
+                return {
+                    x: gameWidth - this.castleWidth / 2,
+                    y: gameHeight / 2 - this.castleHeight / 2
+                };
+                break;
+        }
     }
 }

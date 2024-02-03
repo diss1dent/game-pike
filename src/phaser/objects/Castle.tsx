@@ -1,4 +1,5 @@
 import { OWNER } from "../config/constants";
+import gameConfig from "../config/gameConfig";
 import { TEXT_STYLE_COMMON } from "../config/phaserUI";
 import { CastleInterface } from "../interfaces/Castle";
 import CastleSprite from "./CastleSprite";
@@ -42,10 +43,13 @@ export default class Castle implements CastleInterface {
         this.castleSprite.startPlay();
     }
 
-    updateLevel(level: number) {
-        this.level = level;
-        this.levelText.setText(`level: ${this.level}`);
-        this.updateStrengthBasedOnLevel();
+    setLevel(level: number) {
+        if (-1 < level && level < gameConfig.castleMaxLevel) {
+            this.level = level;
+            this.levelText.setText(`level: ${this.level}`);
+            this.updateStrengthBasedOnLevel();
+        }
+        
     }
 
     updateStrengthBasedOnLevel() {

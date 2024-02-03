@@ -7,6 +7,6 @@ export interface CastleInterface {
     level: number;
     strength: number;
     levelText: Phaser.GameObjects.Text;
-    updateLevel(level: number): void
+    setLevel(level: number): void
     containsPoint(point: Phaser.Math.Vector2): boolean
 }

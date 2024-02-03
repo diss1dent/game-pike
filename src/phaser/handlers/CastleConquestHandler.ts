@@ -21,44 +21,54 @@ export default class CastleConquestHandler {
     update(time: number) {
         if (time - this.lastUpdateTime > gameConfig.castleGrowthTime) {
             this.castleManager.getAll().forEach((castle: CastleInterface) => {
-                // Проверяем, есть ли дороги, ведущие к замку от противника
-                const incomingRoadsFromEnemy = this.incomingRoadsFromEnemy(castle);
+                // Проверяем, есть ли дороги, ведущие к замку
+                const outgoingRoads = this.roadManager.getOutgoingRoadsFromCastle(castle);
+                const incomingRoads = this.roadManager.getIncomingRoadsToCastle(castle);
+                const incomingEnemyRoads = incomingRoads.filter(testCastle => testCastle.owner !== castle.owner);
+                const incomingOwnRoads = incomingRoads.filter(testCastle => testCastle.owner === castle.owner);
 
-                // Если замок нейтральный и к нему ведет дорога, его уровень начинает уменьшаться
-                if (castle.owner === OWNER.neutral && incomingRoadsFromEnemy.length > 0) {
-                    const reductionSpeed = this.calculateReductionSpeed(castle, incomingRoadsFromEnemy);
-                    castle.updateLevel(castle.level - reductionSpeed);
+                // Если к замоку ведет дорога противника, его уровень начинает уменьшаться
+                // Если к замоку ведет своя дорога, его уровень начинает увеличиваться
+                if (incomingRoads.length > 0) {
+                    const growthOrReductionSpeed = this.calculateGrowthOrReductionSpeed(incomingEnemyRoads, incomingOwnRoads);
+                    castle.setLevel(castle.level + growthOrReductionSpeed);
                     if (castle.level <= 0) {
-                        this.conquerCastle(castle, incomingRoadsFromEnemy[0].owner);
+                        this.conquerCastle(castle, incomingEnemyRoads[0].owner);
                     }
                 }
+                
                 // Если замок принадлежит игроку или компьютеру, его уровень увеличивается, только если к нему нет вражеских дорог
-                else if ((castle.owner === OWNER.player || castle.owner === OWNER.computer) && incomingRoadsFromEnemy.length === 0 && castle.level < gameConfig.castleMaxLevel) {
-                    castle.updateLevel(castle.level + 1);
+                else if ((castle.owner === OWNER.player || castle.owner === OWNER.computer) && incomingEnemyRoads.length === 0) {
+                    const defaultGrowthRate = this.calculateDefaultGrowthRate(outgoingRoads);
+                    castle.setLevel(castle.level + defaultGrowthRate);
                 }
             });
             this.lastUpdateTime = time;
         }
     }
 
-    incomingRoadsFromEnemy(castle: CastleInterface): RoadBetweenCastlesInterface[] {
-        return this.roadManager.getAllRoads().filter(road =>
-            (road.endCastle === castle && road.startCastle.owner !== castle.owner) ||
-            (road.startCastle === castle && road.endCastle.owner !== castle.owner)
-        );
+    incomingeEnemyRoads(targetCastle: CastleInterface): RoadBetweenCastlesInterface[] {
+        return this.roadManager.getIncomingRoadsToCastle(targetCastle);//.filter(castle => castle.owner !== targetCastle.owner);
     }
 
-    calculateReductionSpeed(castle: CastleInterface, incomingRoads: RoadBetweenCastlesInterface[]): number {
+    calculateGrowthOrReductionSpeed(incomingEnemyRoads: RoadBetweenCastlesInterface[], incomingOwnRoads: RoadBetweenCastlesInterface[]): number {
         let incomongPower = 0;
-        incomingRoads.forEach(road => {
+        incomingEnemyRoads.forEach(road => {
+            incomongPower -= this.getSingleRoadStrength(road.startCastle);
+        });
+        incomingOwnRoads.forEach(road => {
             incomongPower += this.getSingleRoadStrength(road.startCastle);
         });
         
         return incomongPower;
     }
 
+    calculateDefaultGrowthRate(outgoingRoads: RoadBetweenCastlesInterface[]): number {       
+        return outgoingRoads.length > 0 ? 0 : 1;
+    }
+
     getSingleRoadStrength(castle: CastleInterface): number {
-        const castleRoads = this.roadManager.getCastleRoads(castle);
+        const castleRoads = this.roadManager.getOutgoingRoadsFromCastle(castle);
 
         return castle.strength / castleRoads.length;
     }

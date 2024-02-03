@@ -36,12 +36,11 @@ export default class CastleSprite extends Phaser.GameObjects.Sprite {
 
         // Обработчик события: курсор наведен на замок
         this.on('pointerover', () => {
-            this.setTint(0xB3E5FC); // Например, изменение цвета
+            this.setTint(0xB3E5FC); // изменение цвета
         });
 
         // Обработчик события: курсор убран с замка
         this.on('pointerout', () => {
-            //this.clearTint(); // Убрать изменения
             this.updateTint();
         });
 
