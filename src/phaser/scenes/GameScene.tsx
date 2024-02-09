@@ -1,7 +1,6 @@
 import CastleFactory from '../Factories/CastleFactory';
 import RoadFactory from '../Factories/RoadFactory';
 import RoadManager from '../managers/RoadManager';
-import RoadHelper from '../helpers/RoadHelper';
 import Background from '../objects/Background';
 import RoadDeletionHandler from '../handlers/RoadDeletionHandler';
 import CastleManager from '../managers/CastleManager';
@@ -9,6 +8,7 @@ import CastleConquestHandler from '../handlers/CastleConquestHandler';
 import { RoadConstructionHandler } from '../handlers/RoadConstructionHandler';
 import { AIHandler } from '../handlers/AIHandler';
 import { GAME_LEVEL } from '../config/constants';
+import CastleGrowthHandler from '../handlers/CastleGrowthHandler';
 
 class GameScene extends Phaser.Scene {
     private castleFactory!: CastleFactory;
@@ -18,6 +18,7 @@ class GameScene extends Phaser.Scene {
     private custlesNumber: number = 10; // Можно оставить начальное значение здесь, так как оно не зависит от контекста сцены
     private lastUpdateTime!: number;
     private castleConquestHandler!: CastleConquestHandler;
+    private castleGrowthHandler!: CastleGrowthHandler;
     private aiHandler!: AIHandler;
 
     constructor() {
@@ -33,6 +34,7 @@ class GameScene extends Phaser.Scene {
         this.custlesNumber = 10;
         this.lastUpdateTime = 0;
 
+        this.castleGrowthHandler = new CastleGrowthHandler(this, this.castleManager, this.roadManager);
         this.castleConquestHandler = new CastleConquestHandler(this, this.castleManager, this.roadManager);
         this.aiHandler = new AIHandler(this, this.castleManager, this.roadManager, this.roadFactory);
         
@@ -45,6 +47,7 @@ class GameScene extends Phaser.Scene {
 
     update(time: number, delta: any) {
         // Обновление элементов сцены
+        this.castleGrowthHandler.update(time);
         this.castleConquestHandler.update(time);
         this.aiHandler.update(time);
     }

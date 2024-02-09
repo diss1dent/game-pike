@@ -1,4 +1,5 @@
 import { DEPTH, OWNER } from "../config/constants";
+import EntityHelper from "../helpers/EntityHelper";
 import { CastleInterface } from "../interfaces/Castle";
 
 export default class CastleSprite extends Phaser.GameObjects.Sprite {
@@ -41,7 +42,7 @@ export default class CastleSprite extends Phaser.GameObjects.Sprite {
 
         // Обработчик события: курсор убран с замка
         this.on('pointerout', () => {
-            this.updateTint();
+            EntityHelper.updateTint(this, this.parent.owner);
         });
 
         this.on('pointerdown', () => {
@@ -58,21 +59,8 @@ export default class CastleSprite extends Phaser.GameObjects.Sprite {
     }
 
     startPlay() {
-        this.updateTint();
+        //this.updateTint();
+        EntityHelper.updateTint(this, this.parent.owner);
         this.anims.play('castle-stay');
     }
-
-    updateTint() {
-        // Изменение внешнего вида в зависимости от владельца
-        if (this.parent.owner === OWNER.player) {
-            this.setTint(0x42A5F5); // Синий цвет для замка игрока
-        } else if (this.parent.owner === OWNER.computer) {
-            this.setTint(0xEF5350); // Красный цвет для замка компьютера
-        } else {
-            this.setTint(0xBDBDBD); // для нейтральных замков
-            this.setTint(0xFFFFFF); // для нейтральных замков
-            this.setTint(0xFFFFFF); // для нейтральных замков
-        }
-    }
-
 }

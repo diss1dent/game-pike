@@ -53,8 +53,7 @@ export default class RoadManager {
                 return false;
             }
             return true;
-        });
-        
+        });      
     }
 
     getAllRoads(): RoadBetweenCastlesInterface[] {

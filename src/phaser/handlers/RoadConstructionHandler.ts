@@ -4,6 +4,7 @@ import { gameDesign } from "../config/gameConfig";
 import { CastleInterface } from "../interfaces/Castle";
 import CastleManager from "../managers/CastleManager";
 import RoadManager from "../managers/RoadManager";
+import RoadHelper from '../helpers/RoadHelper'; //todo
 
 export class RoadConstructionHandler {
     private scene: Phaser.Scene;
@@ -32,7 +33,7 @@ export class RoadConstructionHandler {
         this.selectedCastle = castle;
         // Start road construction only if the selected castle belongs to the player
         if (this.selectedCastle && this.selectedCastle.owner === OWNER.player) {
-            if (this.roadFactory.canBuildRoad(this.selectedCastle )) {
+            if (this.roadFactory.canBuildRoadFromCastle(this.selectedCastle)) {
                 this.roadFactory.startRoad(this.selectedCastle.castleSprite.x, this.selectedCastle.castleSprite.y, OWNER.player);
             }            
         }

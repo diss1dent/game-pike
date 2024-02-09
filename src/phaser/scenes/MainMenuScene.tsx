@@ -25,6 +25,7 @@ class MainMenuScene extends Phaser.Scene {
         // Добавляем текстовую кнопку для начала игры
         new TextButton(this, centerX, centerY, 'Start', () => {
             this.scene.start('GameScene');
+            //this.scene.start('VictoryScene');
         });
     }
 

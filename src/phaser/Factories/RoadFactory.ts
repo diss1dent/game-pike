@@ -19,12 +19,19 @@ export default class RoadFactory {
     }
 
     // check if we can start building a new road
-    canBuildRoad(castle: CastleInterface): boolean {
+    canBuildRoadFromCastle(castle: CastleInterface): boolean {
         const connectedRoads = this.manager.getOutgoingRoadsFromCastle(castle).length;
 
         if (connectedRoads >= 3) return false; // Maximum roads reached
         if (connectedRoads === 2 && castle.level <= 60) return false; // Level too low for third road
         if (connectedRoads === 1 && castle.level <= 30) return false; // Level too low for second road
+              
+        return true;
+    }
+
+    canBuildRoadToCastle(castle: CastleInterface, targetCastle: CastleInterface): boolean {
+        if (!this.canBuildRoadFromCastle(castle)) return false   
+        if (this.manager.roadExists(castle, targetCastle)) return false
 
         return true;
     }

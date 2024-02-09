@@ -31,7 +31,7 @@ export default class CastleManager extends EntityManager<CastleInterface> implem
                 closestCastle = target;
             }
         });
-
+        
         return closestCastle;
     }
 

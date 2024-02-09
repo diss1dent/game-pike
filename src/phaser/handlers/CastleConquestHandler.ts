@@ -4,6 +4,7 @@ import { CastleInterface } from "../interfaces/Castle";
 import RoadManager from "../managers/RoadManager";
 import gameConfig from "../config/gameConfig";
 import { RoadBetweenCastlesInterface } from "../interfaces/Road";
+import EntityHelper from "../helpers/EntityHelper";
 
 export default class CastleConquestHandler {
     scene: Phaser.Scene;
@@ -64,9 +65,9 @@ export default class CastleConquestHandler {
     }
 
     conquerCastle(castle: CastleInterface, newOwner: string) {
-        this.roadManager.deleteOutgoingCastleRoads(castle);
         castle.owner = newOwner;
-        castle.castleSprite.updateTint();
+        this.roadManager.deleteOutgoingCastleRoads(castle);
+        EntityHelper.updateTint(castle.castleSprite, castle.owner);
 
         if (this.castleManager.getAllCastlesByOwner(OWNER.computer).length <= 0) {
             this.scene.scene.start('VictoryScene'); 

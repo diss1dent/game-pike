@@ -34,8 +34,8 @@ export class AIHandler {
         const computerCastles = this.castleManager.getAll().filter(castle => castle.owner === OWNER.computer);
         computerCastles.forEach(computerCastle => {
             // Example: Find the closest neutral castle to connect
-            const targetCastle = this.castleManager.findClosestCastleWithOwners(computerCastle, [OWNER.neutral, OWNER.computer]);
-            if (targetCastle && this.roadFactory.canBuildRoad(targetCastle)) {
+            const targetCastle = this.castleManager.findClosestCastleWithOwners(computerCastle, [OWNER.neutral, OWNER.player]);
+            if (targetCastle && this.roadFactory.canBuildRoadToCastle(computerCastle, targetCastle)) {
                 // Build a road to the target castle if possible
                 this.roadManager.addRoadBetweenCastles(computerCastle, targetCastle, OWNER.computer);
             }
@@ -54,6 +54,8 @@ export class AIHandler {
                     // If there are potential targets, decide on the next action based on strategy
                     // For simplicity, let's just connect to the closest target for now
                     this.connectToClosestTarget(castle, potentialTargets);
+
+                    debugger
                 }
             }
 

@@ -25,6 +25,7 @@ class PreloadScene extends Phaser.Scene {
             frameWidth: 25 /* ширина фрейма */,
             frameHeight: 25/* высота фрейма */
         });
+        this.load.image('road-arrow', 'assets/images/road-arrow.png');
         //this.load.image('castle', 'assets/images/castles_9frames_fantasy2.png');
         // Другие ресурсы: изображения, спрайты, аудио и т.д.
     }

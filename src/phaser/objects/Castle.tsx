@@ -44,12 +44,15 @@ export default class Castle implements CastleInterface {
     }
 
     setLevel(level: number) {
-        if (-1 < level && level < gameConfig.castleMaxLevel) {
-            this.level = level;
-            this.levelText.setText(`level: ${this.level}`);
-            this.updateStrengthBasedOnLevel();
+        if (level < 0) {
+            level = 0
+        } else if(level > gameConfig.castleMaxLevel) {
+            level = gameConfig.castleMaxLevel
         }
-        
+
+        this.level = level;
+        this.levelText.setText(`level: ${this.level}`);
+        this.updateStrengthBasedOnLevel();
     }
 
     updateStrengthBasedOnLevel() {
