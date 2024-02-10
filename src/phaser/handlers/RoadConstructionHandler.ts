@@ -1,4 +1,4 @@
-import RoadFactory from "../Factories/RoadFactory";
+import RoadFactory from "../factories/RoadFactory";
 import { OWNER } from "../config/constants";
 import { gameDesign } from "../config/gameConfig";
 import { CastleInterface } from "../interfaces/Castle";

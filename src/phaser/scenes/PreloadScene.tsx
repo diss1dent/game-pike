@@ -4,11 +4,12 @@ class PreloadScene extends Phaser.Scene {
     }
 
     preload() {
+        this.cameras.main.setBackgroundColor('#ffffff'); 
         // Показываем индикатор загрузки
-        let preloadBar = this.add.sprite(this.cameras.main.width / 2, this.cameras.main.height / 2, 'preloadBar');
-        this.load.on('progress', (value: any) => {
-            preloadBar.setScale(value, 1);
-        });
+        // let preloadBar = this.add.sprite(this.cameras.main.width / 2, this.cameras.main.height / 2, 'preloadBar');
+        // this.load.on('progress', (value: any) => {
+        //     preloadBar.setScale(value, 1);
+        // });
 
         // Здесь указываем ресурсы для загрузки
         this.load.image('background', 'assets/images/background.png');
@@ -31,6 +32,7 @@ class PreloadScene extends Phaser.Scene {
     }
 
     create() {
+        document.getElementById('loadingGif').style.display = 'none';
         this.scene.start('MainMenuScene'); // Переходим к главному меню после загрузки
     }
 }

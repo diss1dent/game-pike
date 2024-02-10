@@ -1,5 +1,5 @@
-import CastleFactory from '../Factories/CastleFactory';
-import RoadFactory from '../Factories/RoadFactory';
+import CastleFactory from '../factories/CastleFactory';
+import RoadFactory from '../factories/RoadFactory';
 import RoadManager from '../managers/RoadManager';
 import Background from '../objects/Background';
 import RoadDeletionHandler from '../handlers/RoadDeletionHandler';
@@ -39,8 +39,8 @@ class GameScene extends Phaser.Scene {
         this.aiHandler = new AIHandler(this, this.castleManager, this.roadManager, this.roadFactory);
         
         Background.setFullScreen(this, 'background2');
-        this.castleFactory.createRandomCastles(this.custlesNumber);
         this.castleFactory.createHomeCastles(GAME_LEVEL.level2);
+        this.castleFactory.createRandomCastles(this.custlesNumber);
         new RoadDeletionHandler(this, this.roadManager, this.castleManager);
         new RoadConstructionHandler(this, this.roadFactory, this.roadManager, this.castleManager);
     }

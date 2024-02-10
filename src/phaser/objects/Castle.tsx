@@ -2,15 +2,17 @@ import { OWNER } from "../config/constants";
 import gameConfig from "../config/gameConfig";
 import { TEXT_STYLE_COMMON } from "../config/phaserUI";
 import { CastleInterface } from "../interfaces/Castle";
-import CastleSprite from "./CastleSprite";
+import CastleSprite from "./castle/CastleSprite";
+import HealthBar from "./castle/HealthBar";
 
 export default class Castle implements CastleInterface {
     scene: Phaser.Scene;
     castleSprite: CastleSprite;
     owner: string;
     level: number;
-    levelText: Phaser.GameObjects.Text;
+    //levelText: Phaser.GameObjects.Text;
     strength: number;
+    healthBar: HealthBar;
 
     constructor(scene: Phaser.Scene,
         x: number,
@@ -22,10 +24,9 @@ export default class Castle implements CastleInterface {
             this.scene = scene;
             this.castleSprite = new CastleSprite(scene, x, y, this);
             this.level = level;
-            this.levelText = this.createLevel(x, y);
+            //this.levelText = this.createLevel(x, y);
             this.strength = 1; // Initialize strength
-            this.updateStrengthBasedOnLevel(); // Initial strength adjustment based on level
-            
+            this.updateStrengthBasedOnLevel(); // Initial strength adjustment based on level  
     }
 
     createLevel(x: number, y: number) {
@@ -41,6 +42,7 @@ export default class Castle implements CastleInterface {
     startPlay() {
         // Воспроизведение анимации 'castle-stay'
         this.castleSprite.startPlay();
+        this.healthBar = new HealthBar(this.scene, this);
     }
 
     setLevel(level: number) {
@@ -51,8 +53,9 @@ export default class Castle implements CastleInterface {
         }
 
         this.level = level;
-        this.levelText.setText(`level: ${this.level}`);
+        //this.levelText.setText(`level: ${this.level}`);
         this.updateStrengthBasedOnLevel();
+        this.healthBar.updateHealthBar(this.level, gameConfig.castleMaxLevel); 
     }
 
     updateStrengthBasedOnLevel() {

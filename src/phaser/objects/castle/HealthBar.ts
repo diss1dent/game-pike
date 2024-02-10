@@ -1,5 +1,5 @@
-import { CastleInterface } from "../interfaces/Castle";
-import { Point } from "../interfaces/Point";
+import { CastleInterface } from "../../interfaces/Castle";
+import { Point } from "../../interfaces/Point";
 
 export default class HealthBar {
     scene: Phaser.Scene;
@@ -16,8 +16,8 @@ export default class HealthBar {
 
     createHealthBar() {
         const { x, y } = this.parentCastle.castleSprite;
-        const { width } = this.parentCastle.castleSprite.getSize();
-        this.healthBarPosition = { x: x - width / 2, y: y - width }; // Регулируйте положение полосы здоровья по необходимости
+        const { width, height } = this.parentCastle.castleSprite.getSize();
+        this.healthBarPosition = { x: x + width / 2, y: y + height / 2};
     }
 
     updateHealthBar(level: number, maxLevel: number) {
@@ -27,12 +27,23 @@ export default class HealthBar {
 
         this.graphics.clear(); // Очистка предыдущего состояния
 
-        // Рисуем фон полосы здоровья
+        // Фон полосы здоровья
         this.graphics.fillStyle(0x000000);
-        this.graphics.fillRect(this.healthBarPosition.x, this.healthBarPosition.y - maxHealthHeight, healthBarWidth, maxHealthHeight);
+        this.graphics.fillRect(this.healthBarPosition.x - healthBarWidth / 2, this.healthBarPosition.y - maxHealthHeight, healthBarWidth, maxHealthHeight);
+
+        // Определяем цвет полосы здоровья в зависимости от уровня
+        let healthColor;
+        if(level > 60) {
+            healthColor = 0x00ff00; // Green
+        } else if(level > 30) {
+            healthColor = 0xffaa00; // Yellow
+        } else {
+            healthColor = 0xff0000; // Red
+        }
 
         // Рисуем актуальный уровень здоровья
-        this.graphics.fillStyle(0x00ff00); // Используйте зеленый для здоровья
-        this.graphics.fillRect(this.healthBarPosition.x, this.healthBarPosition.y - healthHeight, healthBarWidth, healthHeight);
+        this.graphics.fillStyle(healthColor);
+        this.graphics.fillRect(this.healthBarPosition.x - healthBarWidth / 2, this.healthBarPosition.y - healthHeight, healthBarWidth, healthHeight);
+
     }
 }

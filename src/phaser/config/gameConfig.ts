@@ -4,8 +4,8 @@ export const gameConfig = {
 };
 
 export const gameDesign = {
-    roadWidth: 15,
-    roadHeight: 15
+    roadWidth: 12,
+    roadHeight: 12
 };
 
 export default gameConfig;

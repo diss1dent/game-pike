@@ -25,11 +25,11 @@ import VictoryScene from '../scenes/VictoryScene';
 
 export const phaserConfig = {
     title: 'Pike',
-    type: Phaser.AUTO, // Phaser будет автоматически выбирать между WebGL и Canvas
+    type: Phaser.WEBGL, // Phaser будет автоматически выбирать между WebGL и Canvas
     width: window.innerWidth - 20, // ширина игрового поля
     height: window.innerHeight - 20, // высота игрового поля
     //parent: 'game-container', // ID DOM-элемента для размещения игры
-    backgroundColor: "#ecf2ff",
+    backgroundColor: "#ffffff",//"#ecf2ff",
     physics: {
         default: 'arcade',
         arcade: {
@@ -53,7 +53,7 @@ export const phaserConfig = {
         autoCenter: Phaser.Scale.CENTER_BOTH // Центрирование игры на экране
     },
     render: {
-        pixelArt: true, // Для пиксельной графики
+        //pixelArt: true, // Для пиксельной графики
         antialias: false // Антиалиасинг (сглаживание) для текстур
     },
     fps: {

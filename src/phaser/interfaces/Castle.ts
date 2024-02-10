@@ -1,4 +1,4 @@
-import CastleSprite from "../objects/CastleSprite";
+import CastleSprite from "../objects/castle/CastleSprite";
 
 export interface CastleInterface {   
     scene: Phaser.Scene;
@@ -6,7 +6,7 @@ export interface CastleInterface {
     owner: string;
     level: number;
     strength: number;
-    levelText: Phaser.GameObjects.Text;
+    //levelText: Phaser.GameObjects.Text;
     setLevel(level: number): void
     containsPoint(point: Phaser.Math.Vector2): boolean
 }
