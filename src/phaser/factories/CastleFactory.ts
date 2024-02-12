@@ -22,10 +22,9 @@ export default class CastleFactory {
         this.manager.add(castle);
     }
 
-    createCastle(x: number, y: number, owner: string = OWNER.neutral, castleLevel: number = 0) {
+    createCastle(x: number, y: number, owner: OWNER = OWNER.neutral, castleLevel: number = 0) {
         const castle = new Castle(this.scene, x, y, owner, castleLevel);
-        this.scene.add.existing(castle.castleSprite); // Добавление замка в сцену
-        
+
         return castle;
     }
 

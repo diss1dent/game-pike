@@ -33,7 +33,7 @@ export const phaserConfig = {
     physics: {
         default: 'arcade',
         arcade: {
-            gravity: { y: 300 }, // гравитация для аркадной физики
+            gravity: { y: 0 }, // гравитация для аркадной физики
             debug: false // показывать или нет отладочную информацию физики
         }
     },

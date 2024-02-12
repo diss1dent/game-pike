@@ -64,7 +64,7 @@ export default class CastleConquestHandler {
         return castle.strength / castleRoads.length;
     }
 
-    conquerCastle(castle: CastleInterface, newOwner: string) {
+    conquerCastle(castle: CastleInterface, newOwner: OWNER) {
         castle.owner = newOwner;
         this.roadManager.deleteOutgoingCastleRoads(castle);
         EntityHelper.updateTint(castle.castleSprite, castle.owner);

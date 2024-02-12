@@ -1,9 +1,13 @@
+import { OWNER } from "../config/constants";
 import CastleSprite from "../objects/castle/CastleSprite";
+import { UnitInterface } from "./UnitsInterfaces";
 
-export interface CastleInterface {   
+export interface CastleInterface {
+    unitArive(unit: UnitInterface): void;
+    //damage(damage: number): unknown;   
     scene: Phaser.Scene;
     castleSprite: CastleSprite;
-    owner: string;
+    owner: OWNER;
     level: number;
     strength: number;
     //levelText: Phaser.GameObjects.Text;

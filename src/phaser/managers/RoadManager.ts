@@ -2,6 +2,8 @@ import Road from '../objects/Road';
 import { CastleInterface } from '../interfaces/Castle';
 import { RoadBetweenCastlesInterface, RoadInterface } from '../interfaces/Road';
 import { gameDesign } from '../config/gameConfig';
+import RoadHelper from '../helpers/RoadHelper';
+import { OWNER } from '../config/constants';
 
 export default class RoadManager {
     private scene: Phaser.Scene;
@@ -22,7 +24,7 @@ export default class RoadManager {
         return road.startCastle !== null && road.endCastle !== null;
     }
 
-    addRoadBetweenCastles(startCastle: CastleInterface, endCastle: CastleInterface, owner: string) {
+    addRoadBetweenCastles(startCastle: CastleInterface, endCastle: CastleInterface, owner: OWNER) {
         const road = new Road(this.scene, owner, startCastle, endCastle);
         const startCastleConnectionPoint = this.getConnectionPoint(startCastle);
         const endCastleConnectionPoint = this.getConnectionPoint(endCastle);
@@ -32,10 +34,7 @@ export default class RoadManager {
     }
 
     getConnectionPoint(castle: CastleInterface) {
-        return {
-            x: castle.castleSprite.x,
-            y: castle.castleSprite.y + castle.castleSprite.height * castle.castleSprite.scaleY / 2 - gameDesign.roadHeight / 2,
-        }
+        return RoadHelper.getConnectionPoint(castle);
     }
 
     deleteRoad(road: RoadBetweenCastlesInterface) {

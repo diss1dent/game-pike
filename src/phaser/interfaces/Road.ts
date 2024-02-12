@@ -1,7 +1,8 @@
+import { OWNER } from "../config/constants";
 import { CastleInterface } from "./Castle";
 
 export interface RoadInterface {
-    owner: string;
+    owner: OWNER;
     startCastle: CastleInterface | null;
     endCastle: CastleInterface | null;
     destroy(): void;

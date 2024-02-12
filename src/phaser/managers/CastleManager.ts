@@ -11,7 +11,7 @@ export default class CastleManager extends EntityManager<CastleInterface> implem
         this.scene = scene;
     }
 
-    findClosestCastleWithOwners(castle: CastleInterface, owners: string[]) {
+    findClosestCastleWithOwners(castle: CastleInterface, owners: OWNER[]) {
         // Identify neutral castles that can be targeted for capture
         const potentialTargets = this.getAll().filter(target => 
             owners.includes(target.owner) && target !== castle
@@ -47,7 +47,7 @@ export default class CastleManager extends EntityManager<CastleInterface> implem
     //     });
     // }
 
-    getAllCastlesByOwner(owner: string): CastleInterface[] {
+    getAllCastlesByOwner(owner: OWNER): CastleInterface[] {
         return this.getAll().filter(castle => castle.owner === owner)
     }
 }

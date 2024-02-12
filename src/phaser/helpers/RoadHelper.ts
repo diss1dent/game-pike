@@ -1,5 +1,7 @@
 import Castle from '../objects/Castle';
 import { Point } from '../interfaces/Point';
+import { CastleInterface } from '../interfaces/Castle';
+import { gameDesign } from '../config/gameConfig';
 
 export default class RoadHelper {
     static isPathClear(startCastle: Castle, endCastle: Castle, allCastles: Castle[]): boolean {
@@ -19,5 +21,12 @@ export default class RoadHelper {
         // Это может быть сложная геометрическая задача, зависит от точности, которую вы хотите достичь
         // ...
         return false; // Временно
+    }
+
+    public static getConnectionPoint(castle: CastleInterface): Point {
+        return {
+            x: castle.castleSprite.x,
+            y: castle.castleSprite.y + castle.castleSprite.height * castle.castleSprite.scaleY / 2 - gameDesign.roadHeight / 2,
+        }
     }
 }

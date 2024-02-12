@@ -1,4 +1,4 @@
-import { DEPTH } from "../config/constants";
+import { DEPTH, OWNER } from "../config/constants";
 import { gameDesign } from "../config/gameConfig";
 import EntityHelper from "../helpers/EntityHelper";
 import { CastleInterface } from "../interfaces/Castle";
@@ -8,11 +8,11 @@ import RoadSprite from "./RoadSprite";
 export default class Road implements RoadInterface {
     private scene: Phaser.Scene;
     private segments: Phaser.GameObjects.Sprite[];
-    public owner: string;
+    public owner: OWNER;
     public startCastle: CastleInterface | null;
     public endCastle: CastleInterface | null;
     
-    constructor(scene: Phaser.Scene, owner: string, startCastle: CastleInterface | null = null, endCastle: CastleInterface | null = null) {
+    constructor(scene: Phaser.Scene, owner: OWNER, startCastle: CastleInterface | null = null, endCastle: CastleInterface | null = null) {
         this.scene = scene;
         this.segments = [];
         this.owner = owner;

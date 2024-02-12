@@ -3,11 +3,13 @@ import EntityHelper from "../../helpers/EntityHelper";
 import { CastleInterface } from "../../interfaces/Castle";
 import Shadow from "./Shadow";
 
-export default class CastleSprite extends Phaser.GameObjects.Sprite {
+//export default class CastleSprite extends Phaser.GameObjects.Sprite {
+export default class CastleSprite extends Phaser.Physics.Arcade.Sprite {
     //sprite: Phaser.GameObjects.Sprite;
     parent: CastleInterface;
     scaleX: number = 0.4;
     scaleY: number = 0.4;
+    bodyHeightMultiplyer: number = 2.4; // toadjust correct body on sprite
     shadow!: Shadow;
 
     constructor(scene: Phaser.Scene, x: number, y: number, parent: CastleInterface) {
@@ -16,6 +18,7 @@ export default class CastleSprite extends Phaser.GameObjects.Sprite {
 
         // Масштабирование спрайта
         this.setScale(this.scaleX, this.scaleY);
+        //z-index
         this.setDepth(DEPTH.castle);
 
         if (!this.scene.anims.exists('castle-stay')) {
@@ -70,6 +73,17 @@ export default class CastleSprite extends Phaser.GameObjects.Sprite {
         //this.updateTint();
         EntityHelper.updateTint(this, this.parent.owner);
         this.anims.play('castle-stay');
+        this.scene.add.existing(this); // Добавление замка в сцену
+        this.scene.physics.add.existing(this);
+
+        // Установка размера физического тела спрайта
+        const body = this.body as Phaser.Physics.Arcade.Body;
+        const size = this.getSize();
+        body.setSize(size.width, size.height * this.bodyHeightMultiplyer);
+        // Дополнительная настройка, если нужно
+        // Например, если хотите использовать круглое тело:
+        // body.setCircle(radius, offsetX, offsetY);
+        
 
         this.initShadow();
     }

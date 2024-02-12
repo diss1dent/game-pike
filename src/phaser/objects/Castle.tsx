@@ -2,22 +2,23 @@ import { OWNER } from "../config/constants";
 import gameConfig from "../config/gameConfig";
 import { TEXT_STYLE_COMMON } from "../config/phaserUI";
 import { CastleInterface } from "../interfaces/Castle";
+import { UnitInterface } from "../interfaces/UnitsInterfaces";
 import CastleSprite from "./castle/CastleSprite";
 import HealthBar from "./castle/HealthBar";
 
 export default class Castle implements CastleInterface {
     scene: Phaser.Scene;
     castleSprite: CastleSprite;
-    owner: string;
+    owner: OWNER;
     level: number;
     //levelText: Phaser.GameObjects.Text;
     strength: number;
-    healthBar: HealthBar;
+    healthBar!: HealthBar;
 
     constructor(scene: Phaser.Scene,
         x: number,
         y: number,
-        owner: string = OWNER.neutral,
+        owner: OWNER = OWNER.neutral,
         level: number = 0
         ) {
             this.owner = owner;
@@ -71,5 +72,27 @@ export default class Castle implements CastleInterface {
     containsPoint(point: Phaser.Math.Vector2): boolean {
         const bounds = this.castleSprite.getBounds();
         return bounds.contains(point.x, point.y);
+    }
+
+    unitArive(unit: UnitInterface) {
+        if (unit.owner !== this.owner) {
+            this.setLevel(this.level - unit.damage)
+        }
+
+        if (this.level <= 0) {
+            this.conquerCastle(this, unit.owner);
+        }
+    }
+
+    conquerCastle(castle: CastleInterface, newOwner: OWNER) {
+        castle.owner = newOwner;
+        this.roadManager.deleteOutgoingCastleRoads(castle);
+        EntityHelper.updateTint(castle.castleSprite, castle.owner);
+
+        if (this.castleManager.getAllCastlesByOwner(OWNER.computer).length <= 0) {
+            this.scene.scene.start('VictoryScene'); 
+        } else if (this.castleManager.getAllCastlesByOwner(OWNER.player).length <= 0) {
+            this.scene.scene.start('GameOverScene'); 
+        }
     }
 }

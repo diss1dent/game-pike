@@ -1,7 +1,7 @@
 import { OWNER } from "../config/constants";
 
 export default class EntityHelper {
-    static updateTint(sprite: Phaser.GameObjects.Sprite , owner: string) {
+    static updateTint(sprite: Phaser.GameObjects.Sprite , owner: OWNER) {
         // Изменение внешнего вида в зависимости от владельца
         if (owner === OWNER.player) {
             sprite.setTint(0x42A5F5); // Синий цвет для замка игрока
