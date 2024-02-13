@@ -1,7 +1,7 @@
 import { GAME_LEVEL, OWNER } from "../config/constants";
 import gameConfig from "../config/gameConfig";
 import { CastleManagerInterface } from "../interfaces/Manager";
-import { Point } from "../interfaces/Point";
+import { PointInterface } from "../interfaces/PointInterface";
 import Castle from "../objects/Castle";
 
 export default class CastleFactory {
@@ -82,7 +82,7 @@ export default class CastleFactory {
         return position;
     }
 
-    isOverlapping(pos1: Point, pos2: Point) {
+    isOverlapping(pos1: PointInterface, pos2: Point) {
         return pos1.x < pos2.x + this.castleWidth &&
                pos1.x + this.castleWidth > pos2.x &&
                pos1.y < pos2.y + this.castleHeight &&

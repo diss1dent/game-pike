@@ -1,11 +1,11 @@
 import { CastleInterface } from "../../interfaces/Castle";
-import { Point } from "../../interfaces/Point";
+import { PointInterface } from "../../interfaces/PointInterface";
 
 export default class HealthBar {
     scene: Phaser.Scene;
     parentCastle: CastleInterface;
     graphics: Phaser.GameObjects.Graphics;
-    healthBarPosition!: Point
+    healthBarPosition!: PointInterface
 
     constructor(scene: Phaser.Scene, parentCastle: CastleInterface) {
         this.scene = scene;

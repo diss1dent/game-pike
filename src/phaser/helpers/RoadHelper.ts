@@ -1,5 +1,5 @@
 import Castle from '../objects/Castle';
-import { Point } from '../interfaces/Point';
+import { PointInterface } from '../interfaces/PointInterface';
 import { CastleInterface } from '../interfaces/Castle';
 import { gameDesign } from '../config/gameConfig';
 
@@ -29,4 +29,5 @@ export default class RoadHelper {
             y: castle.castleSprite.y + castle.castleSprite.height * castle.castleSprite.scaleY / 2 - gameDesign.roadHeight / 2,
         }
     }
+
 }

@@ -75,4 +75,5 @@ export default class RoadManager {
     getIncomingRoadsToCastle(castle: CastleInterface): RoadBetweenCastlesInterface[] {
         return this.roads.filter(r => r.endCastle === castle);
     }
+
 }

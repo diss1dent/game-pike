@@ -52,7 +52,9 @@ export default class UnitsAttackHandler {
     
         if (this.castleManager.getAllCastlesByOwner(OWNER.computer).length <= 0) {
             this.scene.scene.start('VictoryScene'); 
+            debugger
         } else if (this.castleManager.getAllCastlesByOwner(OWNER.player).length <= 0) {
+            debugger
             this.scene.scene.start('GameOverScene'); 
         }
     }

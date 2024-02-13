@@ -1,4 +1,4 @@
-import { DEPTH, OWNER } from "../../config/constants";
+import { DEPTH } from "../../config/constants";
 import EntityHelper from "../../helpers/EntityHelper";
 import { CastleInterface } from "../../interfaces/Castle";
 import Shadow from "./Shadow";

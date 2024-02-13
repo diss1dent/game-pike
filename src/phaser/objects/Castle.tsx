@@ -73,26 +73,4 @@ export default class Castle implements CastleInterface {
         const bounds = this.castleSprite.getBounds();
         return bounds.contains(point.x, point.y);
     }
-
-    unitArive(unit: UnitInterface) {
-        if (unit.owner !== this.owner) {
-            this.setLevel(this.level - unit.damage)
-        }
-
-        if (this.level <= 0) {
-            this.conquerCastle(this, unit.owner);
-        }
-    }
-
-    conquerCastle(castle: CastleInterface, newOwner: OWNER) {
-        castle.owner = newOwner;
-        this.roadManager.deleteOutgoingCastleRoads(castle);
-        EntityHelper.updateTint(castle.castleSprite, castle.owner);
-
-        if (this.castleManager.getAllCastlesByOwner(OWNER.computer).length <= 0) {
-            this.scene.scene.start('VictoryScene'); 
-        } else if (this.castleManager.getAllCastlesByOwner(OWNER.player).length <= 0) {
-            this.scene.scene.start('GameOverScene'); 
-        }
-    }
 }

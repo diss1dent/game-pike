@@ -58,7 +58,9 @@ export class RoadConstructionHandler {
             );
 
             if (endCastle && endCastle !== this.selectedCastle) {
-                this.roadManager.addRoadBetweenCastles(this.selectedCastle, endCastle, OWNER.player);
+                if (this.castleManager.canRoadFitDistanceBetweenCastles(this.selectedCastle, endCastle)) {
+                    this.roadManager.addRoadBetweenCastles(this.selectedCastle, endCastle, OWNER.player);
+                }
             }
 
             this.roadFactory.destroyCurrentRoad();
