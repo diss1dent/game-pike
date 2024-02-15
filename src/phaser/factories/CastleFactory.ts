@@ -1,5 +1,6 @@
 import { GAME_LEVEL, OWNER } from "../config/constants";
 import gameConfig from "../config/gameConfig";
+import { CastleInterface } from "../interfaces/Castle";
 import { CastleManagerInterface } from "../interfaces/Manager";
 import { PointInterface } from "../interfaces/PointInterface";
 import Castle from "../objects/Castle";
@@ -18,7 +19,7 @@ export default class CastleFactory {
         // Предположим, что анимация уже создана в сцене
     }
 
-    addCastle(castle:Castle) {
+    addCastle(castle: CastleInterface) {
         this.manager.add(castle);
     }
 
@@ -82,7 +83,7 @@ export default class CastleFactory {
         return position;
     }
 
-    isOverlapping(pos1: PointInterface, pos2: Point) {
+    isOverlapping(pos1: PointInterface, pos2: PointInterface) {
         return pos1.x < pos2.x + this.castleWidth &&
                pos1.x + this.castleWidth > pos2.x &&
                pos1.y < pos2.y + this.castleHeight &&

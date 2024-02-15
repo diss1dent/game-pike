@@ -6,6 +6,10 @@ import gameConfig from "../config/gameConfig";
 import { RoadBetweenCastlesInterface } from "../interfaces/Road";
 import EntityHelper from "../helpers/EntityHelper";
 
+/**
+ * We moved attacking logic to Units attack handler
+ * @deprecated 
+ */
 export default class CastleConquestHandler {
     scene: Phaser.Scene;
     castleManager: CastleManagerInterface;
@@ -70,7 +74,8 @@ export default class CastleConquestHandler {
         EntityHelper.updateTint(castle.castleSprite, castle.owner);
 
         if (this.castleManager.getAllCastlesByOwner(OWNER.computer).length <= 0) {
-            this.scene.scene.start('VictoryScene'); 
+            this.scene.scene.start('VictoryScene');
+
         } else if (this.castleManager.getAllCastlesByOwner(OWNER.player).length <= 0) {
             this.scene.scene.start('GameOverScene'); 
         }

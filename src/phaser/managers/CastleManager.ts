@@ -3,15 +3,22 @@ import GeometryHelper from "../helpers/GeometryHelper";
 import RoadHelper from "../helpers/RoadHelper";
 import { CastleInterface } from "../interfaces/Castle";
 import { CastleManagerInterface } from "../interfaces/Manager";
-import { PointInterface } from "../interfaces/PointInterface";
 import { EntityManager } from "./EntityManager";
 
 export default class CastleManager extends EntityManager<CastleInterface> implements CastleManagerInterface{
     scene: Phaser.Scene;
+    static instance: CastleManager;
 
     constructor(scene: Phaser.Scene) {
         super();
         this.scene = scene;
+    }
+
+    static getInstance(scene: Phaser.Scene) {
+        if (!CastleManager.instance) {
+            CastleManager.instance = new CastleManager(scene);
+        }
+        return CastleManager.instance;
     }
 
     findClosestCastleWithOwners(castle: CastleInterface, owners: OWNER[]) {
@@ -37,18 +44,6 @@ export default class CastleManager extends EntityManager<CastleInterface> implem
         
         return closestCastle;
     }
-
-    //todo
-    // updateCastleLevels(): void {
-    //     this.getAll().forEach(castle => {
-    //         if (castle.owner === OWNER.neutral) {
-    //             // Example logic: decrease level of neutral castles connected to a player's castle
-    //         } else if (castle.owner === OWNER.player) {
-    //             // Example logic: prevent growth of player's castles connected to neutral ones
-    //         }
-    //         // Implement the specific logic for updating castle levels here
-    //     });
-    // }
 
     getAllCastlesByOwner(owner: OWNER): CastleInterface[] {
         return this.getAll().filter(castle => castle.owner === owner)
@@ -78,7 +73,7 @@ export default class CastleManager extends EntityManager<CastleInterface> implem
             1000
         );
         const castlesBetween = this.findCastlesInZone(zone);
-        console.log('castlesBetween', castlesBetween)
+        //console.log('castlesBetween', castlesBetween)
         
         if (castlesBetween.length <= 3) {
             return true

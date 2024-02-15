@@ -1,7 +1,9 @@
 export class EntityManager<T> {
     private entities: T[] = [];
 
-    constructor() {}
+    constructor() {
+        this.entities = [];
+    }
 
     add(entity: T): void {
         this.entities.push(entity);
@@ -16,6 +18,14 @@ export class EntityManager<T> {
 
     getAll(): T[] {
         return this.entities;
+    }
+
+    reset() {
+        this.deleteAll();
+    }
+
+    deleteAll(): void {
+        this.entities = [];
     }
 
     // Todo

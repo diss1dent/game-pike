@@ -1,7 +1,6 @@
 import Road from '../objects/Road';
 import { CastleInterface } from '../interfaces/Castle';
 import { RoadBetweenCastlesInterface, RoadInterface } from '../interfaces/Road';
-import { gameDesign } from '../config/gameConfig';
 import RoadHelper from '../helpers/RoadHelper';
 import { OWNER } from '../config/constants';
 

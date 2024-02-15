@@ -4,7 +4,6 @@ import { gameDesign } from "../config/gameConfig";
 import { CastleInterface } from "../interfaces/Castle";
 import CastleManager from "../managers/CastleManager";
 import RoadManager from "../managers/RoadManager";
-import RoadHelper from '../helpers/RoadHelper'; //todo
 
 export class RoadConstructionHandler {
     private scene: Phaser.Scene;

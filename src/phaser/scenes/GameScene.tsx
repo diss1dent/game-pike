@@ -4,14 +4,13 @@ import RoadManager from '../managers/RoadManager';
 import Background from '../objects/Background';
 import RoadDeletionHandler from '../handlers/RoadDeletionHandler';
 import CastleManager from '../managers/CastleManager';
-import CastleConquestHandler from '../handlers/CastleConquestHandler';
+//import CastleConquestHandler from '../handlers/CastleConquestHandler';
 import { RoadConstructionHandler } from '../handlers/RoadConstructionHandler';
 import { AIHandler } from '../handlers/AIHandler';
 import { GAME_LEVEL } from '../config/constants';
 import CastleGrowthHandler from '../handlers/CastleGrowthHandler';
 import SpawnUnitsHandler from '../handlers/SpawnUnitsHandler';
 import UnitsAttackHandler from '../handlers/UnitsAttackHandler';
-import UnitManager from '../factories/UnitsFactory';
 import UnitsFactory from '../factories/UnitsFactory';
 
 class GameScene extends Phaser.Scene {
@@ -27,14 +26,16 @@ class GameScene extends Phaser.Scene {
     private castleGrowthHandler!: CastleGrowthHandler;
     private aiHandler!: AIHandler;
     unitsAttackHandler!: UnitsAttackHandler;
+    roadDeletionHandler!: RoadDeletionHandler;
+    roadConstructionHandler!: RoadConstructionHandler;
 
     constructor() {
-        super('GameScene');
-        
+        super('GameScene');        
     }
 
     create() {
-        this.castleManager = new CastleManager(this);
+        this.castleManager = CastleManager.getInstance(this);
+        this.castleManager.reset();
         this.castleFactory = new CastleFactory(this, this.castleManager);
         this.roadManager = new RoadManager(this);
         this.roadFactory = new RoadFactory(this, this.roadManager);
@@ -52,9 +53,10 @@ class GameScene extends Phaser.Scene {
         Background.setFullScreen(this, 'background2');
         this.castleFactory.createHomeCastles(GAME_LEVEL.level2);
         this.castleFactory.createRandomCastles(this.custlesNumber);
-        new RoadDeletionHandler(this, this.roadManager, this.castleManager);
-        new RoadConstructionHandler(this, this.roadFactory, this.roadManager, this.castleManager);
 
+        this.roadDeletionHandler = new RoadDeletionHandler(this, this.roadManager, this.castleManager);
+        this.roadConstructionHandler = new RoadConstructionHandler(this, this.roadFactory, this.roadManager, this.castleManager);
+        debugger
     }
 
     update(time: number, delta: any) {
