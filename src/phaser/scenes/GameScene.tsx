@@ -56,7 +56,7 @@ class GameScene extends Phaser.Scene {
 
         this.roadDeletionHandler = new RoadDeletionHandler(this, this.roadManager, this.castleManager);
         this.roadConstructionHandler = new RoadConstructionHandler(this, this.roadFactory, this.roadManager, this.castleManager);
-        debugger
+        //debugger
     }
 
     update(time: number, delta: any) {

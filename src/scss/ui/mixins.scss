@@ -1,0 +1,30 @@
+// Mixins
+@mixin button-style($bg-color, $text-color: #fff) {
+    background-color: $bg-color;
+    color: $text-color;
+    padding: $button-padding;
+    border-radius: $button-border-radius;
+    border: 1px solid transparent;
+    cursor: pointer;
+    font-family: $font-family;
+    text-align: center;
+    display: inline-block;
+    transition: background-color 0.15s ease-in-out;
+  
+    &:hover {
+      background-color: darken($bg-color, 10%);
+    }
+  }
+  
+  @mixin input-style {
+    padding: $input-padding;
+    border-radius: $input-border-radius;
+    border: 1px solid $input-border-color;
+    font-family: $font-family;
+    transition: border-color 0.15s ease-in-out;
+  
+    &:focus {
+      outline: none;
+      border-color: $dark-color;
+    }
+  }

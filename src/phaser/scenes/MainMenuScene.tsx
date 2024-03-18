@@ -1,3 +1,4 @@
+import { toggleLoginModal } from "../../store/store";
 import TextButton from "../components/TextButton";
 import Background from "../objects/Background";
 
@@ -11,13 +12,10 @@ class MainMenuScene extends Phaser.Scene {
         Background.setFullScreen(this, 'background');
         
         this.createPlayButton();
-        
-        // Другие элементы меню (настройки, выход и т.д.)
+        this.createLoginButton();
     }
 
-    createPlayButton() {
-        
-
+    createPlayButton() {       
         // Размеры экрана
         const centerX = this.scale.width / 2;
         const centerY = this.scale.height / 2;
@@ -29,6 +27,14 @@ class MainMenuScene extends Phaser.Scene {
         });
     }
 
-}
+    createLoginButton() {
+        const loginButtonX = this.scale.width / 2;
+        const loginButtonY = this.scale.height / 2 + 100; // Размещаем ниже кнопки начала игры
+
+        new TextButton(this, loginButtonX, loginButtonY, 'Login', () => {
+            this.input.enabled = false;
+            toggleLoginModal()
+        });
+    }}
 
 export default MainMenuScene;

@@ -1,0 +1,104 @@
+// Buttons
+button, .button {
+    @include button-style($base-color);
+  
+    &--success {
+      @include button-style($success-color);
+    }
+  
+    &--danger {
+      @include button-style($danger-color);
+    }
+  
+    &--warning {
+      @include button-style($warning-color, $text-color);
+    }
+  }
+  
+// Inputs, Textarea, and Select
+input, .input, textarea, .textarea, select, .select {
+    @include input-style;
+
+    &--error {
+        border-color: $danger-color;
+
+        &:focus {
+        border-color: darken($danger-color, 10%);
+        }
+    }
+}
+
+// Links
+.link {
+    color: $base-color;
+    text-decoration: $link-decoration;
+
+    &:hover {
+        color: $link-hover-color;
+        text-decoration: underline;
+    }
+}
+
+// Checkboxes and Radios
+.checkbox, .radio {
+    margin-right: 0.5rem;
+
+    &__input {
+        margin-right: 0.25rem;
+    }
+
+    &__label {
+        font-family: $font-family;
+        cursor: pointer;
+    }
+}
+
+// Toggle Switch
+.toggle-switch {
+    position: relative;
+    display: inline-block;
+    width: 60px;
+    height: 34px;
+
+    &__input {
+        opacity: 0;
+        width: 0;
+        height: 0;
+
+        &:checked + .toggle-switch__slider {
+            background-color: $success-color;
+        }
+
+        &:focus + .toggle-switch__slider {
+            box-shadow: 0 0 1px $success-color;
+        }
+
+        &:checked + .toggle-switch__slider:before {
+            transform: translateX(26px);
+        }
+    }
+
+    &__slider {
+        position: absolute;
+        cursor: pointer;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        background-color: $input-border-color;
+        transition: .4s;
+        border-radius: 34px;
+
+        &:before {
+            position: absolute;
+            content: "";
+            height: 26px;
+            width: 26px;
+            left: 4px;
+            bottom: 4px;
+            background-color: white;
+            transition: .4s;
+            border-radius: 50%;
+        }
+    }
+}

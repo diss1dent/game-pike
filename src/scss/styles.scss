@@ -1,7 +1,11 @@
 @import 'reset';
 
-.game {
-  &-container {
-    margin: 0 auto;
-  }
-}
+@import 'ui/variables';
+@import 'ui/mixins';
+@import 'ui/typography';
+@import 'ui/main';
+@import 'ui/utility';
+
+@import 'modal/modal';
+@import 'game/game';
+

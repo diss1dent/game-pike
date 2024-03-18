@@ -13,7 +13,11 @@ class BootScene extends Phaser.Scene {
     }
 
     create() {
-        document.getElementById('loadingGif').style.display = 'block';
+        const loadingGif = document.getElementById('loadingGif');
+        if (loadingGif !== null) {
+            loadingGif.style.display = 'block';
+        }
+
         
         this.scene.start('PreloadScene'); // Переход к PreloadScene после предварительной загрузки
     }

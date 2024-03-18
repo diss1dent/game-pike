@@ -1,0 +1,68 @@
+// Typography
+body {
+  font-family: $font-family;
+  font-size: $font-size-base;
+  line-height: $line-height-base;
+  color: $text-color;
+}
+
+h1, h2, h3, h4, h5, h6 {
+  font-family: $font-family;
+  font-weight: bold;
+  margin-top: 0;
+  margin-bottom: 0.5rem;
+}
+
+h1 { font-size: 2.5rem; } // 40px
+h2 { font-size: 2rem; } // 32px
+h3 { font-size: 1.75rem; } // 28px
+h4 { font-size: 1.5rem; } // 24px
+h5 { font-size: 1.25rem; } // 20px
+h6 { font-size: 1rem; } // 16px
+
+p {
+  margin-top: 0;
+  margin-bottom: 1rem;
+}
+
+// Enhanced Link Styles
+.link,
+a {
+  color: $base-color;
+  text-decoration: $link-decoration;
+
+  &:hover {
+    color: $link-hover-color;
+    text-decoration: underline;
+  }
+
+  &:active {
+    color: darken($base-color, 15%);
+  }
+
+  &.link-muted {
+    color: $input-border-color;
+
+    &:hover {
+      color: darken($input-border-color, 10%);
+    }
+  }
+}
+
+// Additional Typography Utilities
+.text-muted { color: $input-border-color; }
+.text-primary { color: $base-color; }
+.text-success { color: $success-color; }
+.text-danger { color: $danger-color; }
+.text-warning { color: $warning-color; }
+
+.font-size-base { font-size: $font-size-base; }
+.font-size-lg { font-size: $font-size-lg; }
+.font-size-sm { font-size: $font-size-sm; }
+
+// Lead paragraph
+.lead {
+  font-size: $font-size-lg;
+  font-weight: 300;
+  line-height: 1.4;
+}
