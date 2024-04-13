@@ -4,7 +4,7 @@ function RegisterForm() {
     const [username, setUsername] = createSignal("");
     const [password, setPassword] = createSignal("");
 
-    const handleSubmit = async (e) => {
+    const handleSubmit = async (e: MouseEvent) => {
         e.preventDefault();
 
         try {

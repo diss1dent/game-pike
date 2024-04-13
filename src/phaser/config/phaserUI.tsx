@@ -15,5 +15,5 @@ export const textShadow = "5, 5, 'rgba(0,0,0,0.5)', 15";
 export const TEXT_STYLE_COMMON:Phaser.GameObjects.TextStyle = { 
     fontSize: '16px',
     //fill: '#757575' 
-    fill: '#ffffff' 
+    color: '#ffffff' 
 };

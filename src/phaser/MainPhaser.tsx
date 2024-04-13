@@ -2,6 +2,7 @@ import { onMount, onCleanup, createSignal} from "solid-js";
 import Phaser from 'phaser';
 import {phaserConfig} from './config/phaserConfig'
 import {phaserStore} from '../store/phaserStore'
+//import Background from "./objects/Background";
 
 function MainPhaser() {
   let [gameContainer, setGameContainer] = createSignal();
@@ -26,7 +27,7 @@ function MainPhaser() {
 
   return (
     <div class="game-container">
-      <div ref={setGameContainer}> 
+      <div ref={setGameContainer} > 
       </div>
     </div>
   );

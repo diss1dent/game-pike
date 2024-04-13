@@ -29,7 +29,8 @@ export const phaserConfig = {
     width: window.innerWidth - 20, // ширина игрового поля
     height: window.innerHeight - 20, // высота игрового поля
     //parent: 'game-container', // ID DOM-элемента для размещения игры
-    backgroundColor: "#ffffff",//"#ecf2ff",
+    backgroundColor: "#ecf2ff",
+    //backgroundColor: "#ffffff",//"#ecf2ff",
     physics: {
         default: 'arcade',
         arcade: {

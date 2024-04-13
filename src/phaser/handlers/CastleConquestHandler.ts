@@ -75,7 +75,6 @@ export default class CastleConquestHandler {
 
         if (this.castleManager.getAllCastlesByOwner(OWNER.computer).length <= 0) {
             this.scene.scene.start('VictoryScene');
-
         } else if (this.castleManager.getAllCastlesByOwner(OWNER.player).length <= 0) {
             this.scene.scene.start('GameOverScene'); 
         }

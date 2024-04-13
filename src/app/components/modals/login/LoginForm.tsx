@@ -1,4 +1,6 @@
 import { createSignal } from "solid-js";
+import { authRequest } from "../../../api/request";
+import { setUserAuthenticated, toggleLoginModal } from "../../../../store/store";
 
 function LoginForm() {
     const [name, setName] = createSignal("");
@@ -6,29 +8,12 @@ function LoginForm() {
 
     const handleSubmit = async (e: Event) => {
         e.preventDefault();
-        // Предполагаемая мутация для логина
-        const query = {
-            username: name(),
-            password: password(),
-        };
-
-        try {
-            const response = await fetch("http://pike.loc/auth", {
-                method: "POST",
-                headers: {
-                    "Content-Type": "application/json",
-                    "Accept": "application/json",
-                },
-                body: JSON.stringify(query)
-            });
-
-            const result = await response.json();
-            console.log(result);
-
-            // Обработка результатов логина (например, сохранение токена аутентификации)
-        } catch (error) {
-            console.error("Ошибка при логине:", error);
+        const token = await authRequest(name(), password());
+        if (token) {
+            toggleLoginModal();
+            setUserAuthenticated(name()); 
         }
+    
     };
 
     return (
