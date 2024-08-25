@@ -6,8 +6,11 @@ import Background from "../objects/Background";
 import { config } from "../../config";
 
 class MainMenuScene extends Phaser.Scene {
+    socketManager: SocketManager;
+
     constructor() {
         super('MainMenuScene');
+        this.socketManager = new SocketManager();
     }
 
     create() {
@@ -37,16 +40,26 @@ class MainMenuScene extends Phaser.Scene {
     }
 
     createGameButton() {
-        const socketManager = new SocketManager();
-        socketManager.connect(config.apiSocketURL);
-        socketManager.sendMessage("222222");
-
         const loginButtonX = this.scale.width / 2;
         const loginButtonY = this.scale.height / 2 + 200; // Размещаем ниже кнопки начала игры
 
-        new TextButton(this, loginButtonX, loginButtonY, 'Find new game', () => {
+        const gameButton = new TextButton(this, loginButtonX, loginButtonY, 'Find new game', () => {
             this.input.enabled = false;
-            socketManager.sendMessage("4444");
+            gameButton.setText('Looking for a game...');
+
+            this.socketManager.connect(config.apiSocketURL, config.apiSocketOptions);
+            this.socketManager.joinRoom();
+
+            // Ожидание начала игры
+            this.socketManager.on('startGame', () => {
+                this.input.enabled = true;
+                gameButton.setText('Find new game');
+                this.scene.start('GameScene');
+            });
+
+            this.socketManager.on('waitingForPlayers', () => {
+                gameButton.setText('Waiting for players...');
+            });
         });
     }
 
@@ -56,7 +69,7 @@ class MainMenuScene extends Phaser.Scene {
 
         new TextButton(this, loginButtonX, loginButtonY, 'Login', () => {
             this.input.enabled = false;
-            toggleLoginModal()
+            toggleLoginModal();
         });
     }
 

@@ -1,14 +1,14 @@
-// src/socket/SocketManager.js
-import io, { ManagerOptions, Socket, SocketOptions } from 'socket.io-client';
+import { io, ManagerOptions, Socket, SocketOptions } from 'socket.io-client';
 
 class SocketManager {
-    socket: null|Socket;
+    socket: Socket | null;
+
     constructor() {
         this.socket = null;
     }
 
-    connect(url: Partial<ManagerOptions & SocketOptions> | undefined) {
-        this.socket = io(url);
+    connect(url: string, options: Partial<ManagerOptions & SocketOptions>) {
+        this.socket = io(url, options);
         this.setupListeners();
     }
 
@@ -17,7 +17,7 @@ class SocketManager {
         this.socket?.on('disconnect', () => console.log('Disconnected from server'));
 
         // Добавьте другие обработчики событий здесь
-        this.socket?.on('message', (msg) => {
+        this.socket?.on('message', (msg: string) => {
             console.log('Message from server:', msg);
         });
     }
@@ -25,6 +25,24 @@ class SocketManager {
     sendMessage(msg: string) {
         if (this.socket) {
             this.socket.emit('message', msg);
+        }
+    }
+
+    joinRoom() {
+        if (this.socket) {
+            this.socket.emit('joinRoom');
+        }
+    }
+
+    leaveRoom(room: string) {
+        if (this.socket) {
+            this.socket.emit('leaveRoom', room);
+        }
+    }
+
+    on(event: string, callback: (...args: any[]) => void) {
+        if (this.socket) {
+            this.socket.on(event, callback);
         }
     }
 }

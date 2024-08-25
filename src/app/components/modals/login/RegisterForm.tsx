@@ -1,4 +1,5 @@
 import { createSignal } from "solid-js";
+import { config } from "../../../../config";
 
 function RegisterForm() {
     const [username, setUsername] = createSignal("");
@@ -8,7 +9,7 @@ function RegisterForm() {
         e.preventDefault();
 
         try {
-            const response = await fetch("http://pike.loc/api/users/register", {
+            const response = await fetch(config.apiURL + "api/users/register", {
                 method: "POST",
                 headers: {
                     "Accept": "application/ld+json",

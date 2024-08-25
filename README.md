@@ -27,3 +27,7 @@ Your app is ready to be deployed!
 
 Learn more about deploying your application with the [documentations](https://vitejs.dev/guide/static-deploy.html)
 # game-pike
+
+
+
+Я сделал игру на phaser и solidjs, сделал окно авторизации в solidjs, сделал отдельно апи сервер на symfony использую graphql который возвращает jwt токен. Игра может быть как между игроками так и между игроком и компьютером. Я создал вебсокет сервер на socket.io. клиент будет подключаться в начале игры через websocket в конце игры отправлять статистику в таблицу Participant на сервер симфони. Подключил двух игроков как бы в комнату, что бы они оба получали сообщения.
