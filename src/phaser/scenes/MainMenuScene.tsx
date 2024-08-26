@@ -58,7 +58,7 @@ class MainMenuScene extends Phaser.Scene {
             });
 
             this.socketManager.on('waitingForPlayers', () => {
-                gameButton.setText('Waiting for players...');
+                gameButton.setText('Looking for a game...');
             });
         });
     }
