@@ -1,4 +1,8 @@
-export class EntityManager<T> {
+interface Identifiable {
+    id: number;
+}
+
+export class EntityManager<T extends Identifiable> {
     private entities: T[] = [];
 
     constructor() {
@@ -20,6 +24,10 @@ export class EntityManager<T> {
         return this.entities;
     }
 
+    getById(id: number): T | undefined {
+        return this.entities.find(entity => entity.id === id);
+    }
+
     reset() {
         this.deleteAll();
     }
@@ -27,9 +35,4 @@ export class EntityManager<T> {
     deleteAll(): void {
         this.entities = [];
     }
-
-    // Todo
-    // - Finding entities by properties
-    // - Filtering entities based on conditions
-    // - Updating entities in bulk
 }

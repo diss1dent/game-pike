@@ -1,4 +1,3 @@
-import { OWNER } from "../config/constants";
 import GeometryHelper from "../helpers/GeometryHelper";
 import RoadHelper from "../helpers/RoadHelper";
 import { CastleInterface } from "../interfaces/Castle";
@@ -21,7 +20,7 @@ export default class CastleManager extends EntityManager<CastleInterface> implem
         return CastleManager.instance;
     }
 
-    findClosestCastleWithOwners(castle: CastleInterface, owners: OWNER[]) {
+    findClosestCastleWithOwners(castle: CastleInterface, owners: string[]) {
         // Identify neutral castles that can be targeted for capture
         const potentialTargets = this.getAll().filter(target => 
             owners.includes(target.owner) && target !== castle
@@ -45,7 +44,7 @@ export default class CastleManager extends EntityManager<CastleInterface> implem
         return closestCastle;
     }
 
-    getAllCastlesByOwner(owner: OWNER): CastleInterface[] {
+    getAllCastlesByOwner(owner: string): CastleInterface[] {
         return this.getAll().filter(castle => castle.owner === owner)
     }
 

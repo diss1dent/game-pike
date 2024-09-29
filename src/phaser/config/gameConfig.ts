@@ -1,6 +1,15 @@
-export const gameConfig = {
+export const gameConfig: { 
+    castleMaxLevel: number, 
+    castleGrowthTime: number, 
+    playerId: string,
+    owners: string[],
+    ownerColors: { [key: string]: number }; 
+} = {
     castleMaxLevel: 100,
     castleGrowthTime: 1000,
+    playerId: '',
+    owners: [], // Initialized as an empty array of strings
+    ownerColors: {}, // Initialized as an empty array of strings
 };
 
 export const gameDesign = {

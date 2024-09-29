@@ -1,5 +1,5 @@
 import { OWNER } from '../config/constants';
-import { EVENTS } from '../config/gameConfig';
+import gameConfig, { EVENTS } from '../config/gameConfig';
 import UnitsFactory from '../factories/UnitsFactory';
 import EntityHelper from '../helpers/EntityHelper';
 import { CastleInterface } from '../interfaces/Castle';
@@ -50,11 +50,9 @@ export default class UnitsAttackHandler {
         this.roadManager.deleteOutgoingCastleRoads(castle);
         EntityHelper.updateTint(castle.castleSprite, castle.owner);
     
-        if (this.castleManager.getAllCastlesByOwner(OWNER.computer).length <= 0) {
+        if (this.castleManager.getAllCastlesByOwner(gameConfig.playerId).length === this.castleManager.getAll().length) {
             this.scene.scene.start('VictoryScene'); 
-            debugger
-        } else if (this.castleManager.getAllCastlesByOwner(OWNER.player).length <= 0) {
-            debugger
+        } else if (this.castleManager.getAllCastlesByOwner(gameConfig.playerId).length <= 0) {
             this.scene.scene.start('GameOverScene'); 
         }
     }

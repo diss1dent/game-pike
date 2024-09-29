@@ -8,6 +8,6 @@ export interface EntityManagerInterface<T> {
 }
 
 export interface CastleManagerInterface extends EntityManagerInterface<CastleInterface> {
-    findClosestCastleWithOwners(computerCastle: CastleInterface, owners: OWNER[]): CastleInterface | null;
-    getAllCastlesByOwner(owner: OWNER): CastleInterface[];
+    findClosestCastleWithOwners(computerCastle: CastleInterface, owners: string[]): CastleInterface | null;
+    getAllCastlesByOwner(owner: string): CastleInterface[];
 }

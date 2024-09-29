@@ -2,25 +2,27 @@ import { OWNER } from "../config/constants";
 import gameConfig from "../config/gameConfig";
 import { TEXT_STYLE_COMMON } from "../config/phaserUI";
 import { CastleInterface } from "../interfaces/Castle";
-import { UnitInterface } from "../interfaces/UnitsInterfaces";
 import CastleSprite from "./castle/CastleSprite";
 import HealthBar from "./castle/HealthBar";
 
 export default class Castle implements CastleInterface {
+    id: number;
     scene: Phaser.Scene;
     castleSprite: CastleSprite;
-    owner: OWNER;
+    owner: string;
     level: number;
     //levelText: Phaser.GameObjects.Text;
     strength: number;
     healthBar!: HealthBar;
 
-    constructor(scene: Phaser.Scene,
+    constructor(id: number,
+        scene: Phaser.Scene,
         x: number,
         y: number,
-        owner: OWNER = OWNER.neutral,
+        owner: string = OWNER.neutral,
         level: number = 0
         ) {
+            this.id = id;
             this.owner = owner;
             this.scene = scene;
             this.castleSprite = new CastleSprite(scene, x, y, this);

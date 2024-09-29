@@ -1,9 +1,9 @@
-import { parseJwt } from "../../app/api/helper";
 import SocketManager from "../../app/api-socket/SocketManager";
 import { store, toggleLoginModal } from "../../store/store";
 import TextButton from "../components/TextButton";
 import Background from "../objects/Background";
 import { config } from "../../config";
+import gameConfig from "../config/gameConfig";
 
 class MainMenuScene extends Phaser.Scene {
     socketManager: SocketManager;
@@ -14,10 +14,11 @@ class MainMenuScene extends Phaser.Scene {
     }
 
     create() {
-        // Установка фона
+        this.registry.set('socketManager', this.socketManager);
+        
         Background.setFullScreen(this, 'background');
         
-        this.createPlayButton();
+        //this.createPlayButton();
         this.createGameButton();
 
         if (!store.isAuthenticated) { // Проверяем, не авторизован ли уже пользователь
@@ -27,15 +28,20 @@ class MainMenuScene extends Phaser.Scene {
         }
     }
 
+    /**
+     * todo game with the ai
+     */
     createPlayButton() {       
         // Размеры экрана
         const centerX = this.scale.width / 2;
         const centerY = this.scale.height / 2;
 
-        // Добавляем текстовую кнопку для начала игры
         new TextButton(this, centerX, centerY, 'Start', () => {
-            this.scene.start('GameScene');
-            //this.scene.start('VictoryScene');
+            this.socketManager.connect(config.apiSocketURL, config.apiSocketOptions);
+            // waiting for the game
+            this.socketManager.on('startGame', (data) => {
+                this.scene.start('GameScene', { castles: data.castles });
+            });
         });
     }
 
@@ -50,15 +56,18 @@ class MainMenuScene extends Phaser.Scene {
             this.socketManager.connect(config.apiSocketURL, config.apiSocketOptions);
             this.socketManager.joinRoom();
 
-            // Ожидание начала игры
-            this.socketManager.on('startGame', () => {
-                this.input.enabled = true;
-                gameButton.setText('Find new game');
-                this.scene.start('GameScene');
-            });
-
             this.socketManager.on('waitingForPlayers', () => {
                 gameButton.setText('Looking for a game...');
+            });
+
+            // waiting for the game
+            this.socketManager.on('startGame', (data) => {
+                this.input.enabled = true;
+                gameButton.setText('Find new game');
+                this.scene.start('GameScene', data);
+                gameConfig.owners = Object.keys(data.ownerColors);
+                gameConfig.playerId = 'player' + this.socketManager.socket?.id;
+                gameConfig.ownerColors = data.ownerColors;
             });
         });
     }

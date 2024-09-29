@@ -22,9 +22,9 @@ class SocketManager {
         });
     }
 
-    sendMessage(msg: string) {
+    emit(eventName: string, eventMessage: object) {
         if (this.socket) {
-            this.socket.emit('message', msg);
+            this.socket.emit(eventName, eventMessage);
         }
     }
 

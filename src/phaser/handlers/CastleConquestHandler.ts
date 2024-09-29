@@ -73,9 +73,9 @@ export default class CastleConquestHandler {
         this.roadManager.deleteOutgoingCastleRoads(castle);
         EntityHelper.updateTint(castle.castleSprite, castle.owner);
 
-        if (this.castleManager.getAllCastlesByOwner(OWNER.computer).length <= 0) {
+        if (this.castleManager.getAllCastlesByOwner(gameConfig.playerId).length === this.castleManager.getAll().length) {
             this.scene.scene.start('VictoryScene');
-        } else if (this.castleManager.getAllCastlesByOwner(OWNER.player).length <= 0) {
+        } else if (this.castleManager.getAllCastlesByOwner(gameConfig.playerId).length <= 0) {
             this.scene.scene.start('GameOverScene'); 
         }
     }

@@ -1,9 +1,9 @@
-import { OWNER } from "../config/constants";
 import { CastleManagerInterface } from "../interfaces/Manager";
 import { CastleInterface } from "../interfaces/Castle";
 import RoadManager from "../managers/RoadManager";
 import gameConfig from "../config/gameConfig";
 import { RoadBetweenCastlesInterface } from "../interfaces/Road";
+import OwnersHelper from "../helpers/OwnerHelper";
 
 export default class CastleGrowthHandler {
     scene: Phaser.Scene;
@@ -23,7 +23,7 @@ export default class CastleGrowthHandler {
             this.castleManager.getAll().forEach((castle: CastleInterface) => {        
                 const outgoingRoads = this.roadManager.getOutgoingRoadsFromCastle(castle);        
                 // Если замок принадлежит игроку или компьютеру, его уровень увеличивается, только если к нему нет вражеских дорог
-                if ((castle.owner === OWNER.player || castle.owner === OWNER.computer)) {
+                if ((OwnersHelper.isOwnerComputer(castle.owner) || OwnersHelper.isOwnerPlayer(castle.owner))) {
                     const defaultGrowthRate = this.calculateDefaultGrowthRate(outgoingRoads);
                     castle.setLevel(castle.level + defaultGrowthRate);
                 }

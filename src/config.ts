@@ -9,7 +9,7 @@ export const config = {
     // https://dashboard.render.com/ free node server login via githab
     apiSocketURL: isProd() ? 'https://game-pike-socket.onrender.com/' : 'http://localhost:3000/',
     //apiSocketURL: 'https://thegames.work/server-node/',
-    apiSocketOptions: {path: "/server-node"},
+    apiSocketOptions: isProd() ? {path: "/server-node"} : {path: "/server-node"},
     //apiSocketOptions: {},
 };
 

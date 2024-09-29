@@ -1,4 +1,3 @@
-import { OWNER } from '../config/constants';
 import { CastleInterface } from '../interfaces/Castle';
 import RoadManager from '../managers/RoadManager';
 import Road from '../objects/Road';
@@ -15,7 +14,7 @@ export default class RoadFactory {
     }
 
     // start building a new road
-    startRoad(startX: number, startY: number, owner: OWNER) {
+    startRoad(startX: number, startY: number, owner: string) {
         this.currentRoad = new Road(this.scene, owner);
     }
 

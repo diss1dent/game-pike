@@ -7,13 +7,15 @@ import CastleManager from '../managers/CastleManager';
 //import CastleConquestHandler from '../handlers/CastleConquestHandler';
 import { RoadConstructionHandler } from '../handlers/RoadConstructionHandler';
 import { AIHandler } from '../handlers/AIHandler';
-import { GAME_LEVEL } from '../config/constants';
 import CastleGrowthHandler from '../handlers/CastleGrowthHandler';
 import SpawnUnitsHandler from '../handlers/SpawnUnitsHandler';
 import UnitsAttackHandler from '../handlers/UnitsAttackHandler';
 import UnitsFactory from '../factories/UnitsFactory';
+import { CastleDataInterface } from '../interfaces/Castle';
+import SocketManager from '../../app/api-socket/SocketManager';
 
 class GameScene extends Phaser.Scene {
+    private socketManager!: SocketManager;
     private castleFactory!: CastleFactory;
     private castleManager!: CastleManager;
     private roadFactory!: RoadFactory;
@@ -33,30 +35,30 @@ class GameScene extends Phaser.Scene {
         super('GameScene');        
     }
 
-    create() {
+    init(data: { castles: CastleDataInterface[], ownerColors: [] }) {
         this.castleManager = CastleManager.getInstance(this);
         this.castleManager.reset();
         this.castleFactory = new CastleFactory(this, this.castleManager);
         this.roadManager = new RoadManager(this);
         this.roadFactory = new RoadFactory(this, this.roadManager);
         this.unitsFactory = new UnitsFactory(this, this.castleManager, this.roadManager);
-        this.custlesNumber = 10;
+
+        this.castleFactory.createCastlesFromData(data.castles);
+    }
+
+    create() {
         this.lastUpdateTime = 0;
-
+        this.socketManager = this.registry.get('socketManager') as SocketManager;
+        
         this.castleGrowthHandler = new CastleGrowthHandler(this, this.castleManager, this.roadManager);
-        //this.castleConquestHandler = new CastleConquestHandler(this, this.castleManager, this.roadManager);
-
         this.spawnUnitsHandler = new SpawnUnitsHandler(this, this.castleManager, this.roadManager, this.unitsFactory);
         this.unitsAttackHandler = new UnitsAttackHandler(this, this.castleManager, this.roadManager, this.unitsFactory);
         this.aiHandler = new AIHandler(this, this.castleManager, this.roadManager, this.roadFactory);
-        
+
         Background.setFullScreen(this, 'background2');
-        this.castleFactory.createHomeCastles(GAME_LEVEL.level2);
-        this.castleFactory.createRandomCastles(this.custlesNumber);
 
         this.roadDeletionHandler = new RoadDeletionHandler(this, this.roadManager, this.castleManager);
-        this.roadConstructionHandler = new RoadConstructionHandler(this, this.roadFactory, this.roadManager, this.castleManager);
-        //debugger
+        this.roadConstructionHandler = new RoadConstructionHandler(this, this.roadFactory, this.roadManager, this.castleManager, this.socketManager);
     }
 
     update(time: number, delta: any) {

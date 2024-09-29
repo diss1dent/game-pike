@@ -4,17 +4,17 @@ export const DEPTH = {
     roadArrow: 510,
     unit: 700,
 }
-
+// todo fix owners and CASTLES_THAT_GROWS
 export const enum OWNER {
     neutral = 'neutral',
-    player = 'player',
-    computer = 'computer',
+    //player = 'player',
+    //computer = 'computer',
 }
 
-export const CASTLES_THAT_GROWS = [
-    OWNER.player,
-    OWNER.computer
-]
+// export const CASTLES_THAT_GROWS = [
+//     OWNER.player,
+//     OWNER.computer
+// ]
 
 export const GAME_LEVEL = {
     level1: "level1",
