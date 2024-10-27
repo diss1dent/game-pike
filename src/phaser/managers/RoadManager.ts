@@ -54,6 +54,10 @@ export default class RoadManager {
         });      
     }
 
+    getRoadById(id: string): RoadBetweenCastlesInterface | undefined{
+        return this.roads.find(road => road.id === id);
+    }
+
     getAllRoads(): RoadBetweenCastlesInterface[] {
         return this.roads;
     }

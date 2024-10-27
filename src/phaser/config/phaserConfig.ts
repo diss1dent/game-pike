@@ -51,6 +51,7 @@ export const phaserConfig = {
     },
     scale: {
         mode: Phaser.Scale.FIT, // Режим масштабирования
+        //mode: Phaser.Scale.ENVELOP, // Режим, который поддерживает масштабирование под разные экраны
         autoCenter: Phaser.Scale.CENTER_BOTH // Центрирование игры на экране
     },
     render: {

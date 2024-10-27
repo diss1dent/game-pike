@@ -1,10 +1,12 @@
+import { v4 as uuidv4 } from 'uuid';
 import { DEPTH } from "../config/constants";
 import { gameDesign } from "../config/gameConfig";
 import { CastleInterface } from "../interfaces/Castle";
 import { RoadInterface } from "../interfaces/Road";
 import RoadSprite from "./RoadSprite";
 
-export default class Road implements RoadInterface {
+export default class Road implements RoadInterface {    
+    private id: string;
     private scene: Phaser.Scene;
     private segments: Phaser.GameObjects.Sprite[];
     public owner: string;
@@ -12,11 +14,16 @@ export default class Road implements RoadInterface {
     public endCastle: CastleInterface | null;
     
     constructor(scene: Phaser.Scene, owner: string, startCastle: CastleInterface | null = null, endCastle: CastleInterface | null = null) {
+        this.id = uuidv4();
         this.scene = scene;
         this.segments = [];
         this.owner = owner;
         this.startCastle = startCastle;
         this.endCastle = endCastle;
+    }
+    
+    public getId(): string {
+        return this.id;
     }
 
     update(startX: number, startY: number, endX: number, endY: number) {

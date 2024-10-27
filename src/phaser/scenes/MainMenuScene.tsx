@@ -62,6 +62,7 @@ class MainMenuScene extends Phaser.Scene {
 
             // waiting for the game
             this.socketManager.on('startGame', (data) => {
+                console.log(data);
                 this.input.enabled = true;
                 gameButton.setText('Find new game');
                 this.scene.start('GameScene', data);

@@ -24,8 +24,8 @@ export default class RoadDeletionHandler {
         this.graphics = scene.add.graphics({ lineStyle: { width: 2, color: 0x00ff00 } });
     }    
 
-    handlePointerDown(pointer: PointerEvent) {
-        const startPoint = new Phaser.Math.Vector2(pointer.x, pointer.y);
+    handlePointerDown(pointer: Phaser.Input.Pointer) {
+        const startPoint = new Phaser.Math.Vector2(pointer.worldX, pointer.worldY);
         // Check if the startPoint is within any castle
         if (this.isPointInsideAnyCastle(startPoint)) {
             // If startPoint is inside a castle, consider this as an intent to draw a road.

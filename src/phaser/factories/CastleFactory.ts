@@ -14,7 +14,6 @@ export default class CastleFactory {
         this.manager = manager;
         this.castleWidth = 80; // Задайте реальные размеры
         this.castleHeight = 110; // Задайте реальные размеры
-        // Предположим, что анимация уже создана в сцене
     }
 
     addCastle(castle: CastleInterface) {

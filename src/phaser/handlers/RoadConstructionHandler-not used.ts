@@ -63,7 +63,7 @@ export class RoadConstructionHandler {
         if (this.selectedCastle && this.roadFactory.currentRoad) {
             // Attempt to finalize the road construction if the mouse is released over another castle
             let endCastle = this.castleManager.getAll().find(castle =>
-                castle.castleSprite.getBounds().contains(pointer.x, pointer.y)
+                castle.castleSprite.getBounds().contains(pointer.worldX, pointer.worldY)
             );
 
             if (endCastle && endCastle !== this.selectedCastle) {
